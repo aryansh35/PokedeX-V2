@@ -140,21 +140,10 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className="p-6 border-t border-white/5">
-          <button 
-            onClick={async () => {
-              // 1. Wipe local state & cache
-              localStorage.clear();
-              // 2. Trigger server-side logout
-              const { logoutAction } = await import("@/server/actions");
-              await logoutAction();
-              // 3. Final fallback redirect
-              window.location.href = "/login";
-            }}
-            className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-rose-500 hover:bg-rose-500/10 transition-all active:scale-95"
-          >
+          <Link href="/login" className="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-rose-500 hover:bg-rose-500/10 transition-all">
             <LogOut size={20} />
             Logout
-          </button>
+          </Link>
         </div>
       </aside>
 
