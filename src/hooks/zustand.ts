@@ -1,23 +1,5 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { useSyncExternalStore } from 'react';
-
-export function useScreen() {
-  const isMobile = useSyncExternalStore(
-    (callback) => {
-      if (typeof window === "undefined") return () => {};
-      callback();
-      window.addEventListener("resize", callback);
-      return () => window.removeEventListener("resize", callback);
-    },
-    () => {
-      if (typeof window === "undefined") return true;
-      return window.innerWidth <= 768;
-    },
-    () => true
-  );
-  return { isMobile };
-}
 
 interface AuthState {
   email: {
