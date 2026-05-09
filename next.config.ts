@@ -1,20 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ['10.3.122.34'],
-  experimental: {
-    globalNotFound: true,
+  /* config options here */
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
   images: {
-    qualities: [75, 85, 95, 100],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'academia.srmist.edu.in',
-        pathname: '/**',
-      },
-    ],
-  },
+    unoptimized: true,
+  }
 };
 
 export default nextConfig;

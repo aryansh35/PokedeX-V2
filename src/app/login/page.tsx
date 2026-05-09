@@ -97,7 +97,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div 
+      className="min-h-screen bg-[#0a0a0b] flex flex-col items-center justify-center p-4 relative overflow-hidden"
+      style={{ backgroundColor: '#0a0a0b' }} // Hardcoded fallback 🛡️
+    >
       {/* Dynamic Tactical Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow" />
@@ -106,10 +109,16 @@ export default function LoginPage() {
       </div>
 
       {showSessionGuard && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-xl animate-in fade-in duration-500">
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-xl animate-in fade-in duration-500"
+          style={{ backgroundColor: 'rgba(0,0,0,0.9)' }}
+        >
           <div className="w-full max-w-md bg-[#121214]/80 border border-rose-500/20 rounded-[2.5rem] p-10 shadow-2xl shadow-rose-500/10 space-y-8 animate-in zoom-in-95 duration-500">
             <div className="text-center space-y-4">
-              <div className="inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-rose-500 shadow-2xl shadow-rose-500/30 transform hover:scale-110 transition-transform">
+              <div 
+                className="inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-rose-500 shadow-2xl shadow-rose-500/30 transform hover:scale-110 transition-transform"
+                style={{ width: '96px', height: '96px' }}
+              >
                 <AlertCircle className="w-12 h-12 text-white animate-pulse" />
               </div>
               <div className="space-y-2">
@@ -148,7 +157,10 @@ export default function LoginPage() {
         <div className="text-center space-y-6">
           <div className="relative inline-block group">
             <div className={`absolute inset-0 bg-primary/20 blur-2xl rounded-full scale-150 transition-opacity duration-700 ${isAuthorized ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
-            <div className={`relative inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.3)] transform transition-all duration-500 border border-white/20 ${isAuthorized ? 'animate-authorize' : '-rotate-6 group-hover:rotate-0'}`}>
+            <div 
+              className={`relative inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.3)] transform transition-all duration-500 border border-white/20 ${isAuthorized ? 'animate-authorize' : '-rotate-6 group-hover:rotate-0'}`}
+              style={{ width: '96px', height: '96px', backgroundColor: '#7c3aed' }} // Fallback 🛡️
+            >
               <Pokeball className="w-14 h-14 text-white drop-shadow-lg" />
             </div>
           </div>
