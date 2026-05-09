@@ -3,16 +3,20 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
-  const isAuthPage = request.nextUrl.pathname === '/login';
-  const isDashboardPage = request.nextUrl.pathname.startsWith('/dashboard');
+  const { pathname } = request.nextUrl;
 
-  // 1. If on login page and already have token, go to dashboard
-  if (isAuthPage && token) {
+  // 1. Handle Root Path
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL(token ? '/dashboard' : '/login', request.url));
+  }
+
+  // 2. If on login page and already have token, go to dashboard
+  if (pathname === '/login' && token) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  // 2. If on dashboard and no token, go to login
-  if (isDashboardPage && !token) {
+  // 3. If on dashboard and no token, go to login
+  if (pathname.startsWith('/dashboard') && !token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 

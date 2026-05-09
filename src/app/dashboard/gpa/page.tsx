@@ -104,39 +104,39 @@ export default function GPAPage() {
    };
 
    return (
-      <div className="pb-32 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="pb-32 animate-in fade-in slide-in-from-bottom-4 duration-700 overflow-x-hidden">
          <div className="p-4 lg:p-12 space-y-10 lg:space-y-16 max-w-7xl mx-auto">
-            <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 overflow-hidden">
                <div className="space-y-2">
                   <div className="flex items-center gap-2 mb-2">
                      <div className="w-8 h-[2px] bg-primary rounded-full" />
                      <span className="text-[10px] font-black uppercase tracking-[0.5em] text-primary">Intelligence Hub</span>
                   </div>
-                  <h1 className="text-4xl lg:text-8xl font-black tracking-tighter text-white uppercase italic leading-[0.8] mb-3">
+                  <h1 className="text-3xl lg:text-8xl font-black tracking-tighter text-white uppercase italic leading-[0.8] mb-3">
                      GPA <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500 italic">Sentinel</span>
                   </h1>
-                  <p className="text-muted-foreground font-medium text-xs lg:text-lg italic uppercase tracking-widest opacity-60">High-Precision Academic Performance Analytics</p>
+                  <p className="text-[10px] lg:text-lg font-medium italic uppercase tracking-widest opacity-60 text-muted-foreground">High-Precision Academic Performance Analytics</p>
                </div>
                
                {/* Unified Master Switcher */}
-               <div className="grid grid-cols-3 p-1 bg-white/5 rounded-[1.5rem] border border-white/5 backdrop-blur-xl w-full md:w-[450px]">
+               <div className="grid grid-cols-3 p-1 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-xl w-full md:w-[450px]">
                   <button 
                      onClick={() => setMode("auto")}
-                     className={`px-2 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${mode === "auto" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     className={`px-1 py-3 rounded-xl text-[8px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "auto" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                   >
                      Auto Sync
                   </button>
                   <button 
                      onClick={() => setMode("manual")}
-                     className={`px-2 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${mode === "manual" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     className={`px-1 py-3 rounded-xl text-[8px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "manual" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                   >
                      Simulation
                   </button>
                   <button 
                      onClick={() => setMode("cgpa")}
-                     className={`px-2 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${mode === "cgpa" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     className={`px-1 py-3 rounded-xl text-[8px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "cgpa" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                   >
-                     Strategic CGPA
+                     CGPA Cal
                   </button>
                </div>
             </header>
@@ -170,7 +170,7 @@ export default function GPAPage() {
 
                            <div className="flex flex-col items-center justify-center text-center gap-6 w-full">
                               <div className="relative">
-                                 <h2 className="text-8xl lg:text-[12rem] font-black tracking-tighter italic leading-none text-white drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                                 <h2 className="text-6xl lg:text-[12rem] font-black tracking-tighter italic leading-none text-white drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
                                     {calculator.sgpa}
                                  </h2>
                                  <div className="mt-6 flex flex-col items-center gap-2">
@@ -377,7 +377,7 @@ export default function GPAPage() {
                         <div className="relative z-10">
                            <p className="text-[12px] font-black uppercase tracking-[0.5em] text-primary mb-8">Cumulative Grade</p>
                            <div className="relative inline-block mb-10 w-full">
-                              <h2 className="text-7xl lg:text-[9rem] font-black tracking-tighter italic leading-none text-white drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] break-words">
+                              <h2 className="text-5xl lg:text-[9rem] font-black tracking-tighter italic leading-none text-white drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] break-words">
                                  {cgpaResults.cgpa}
                               </h2>
                            </div>
