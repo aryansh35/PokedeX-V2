@@ -106,37 +106,51 @@ export default function GPAPage() {
    return (
       <div className="pb-32 animate-in fade-in slide-in-from-bottom-4 duration-700 overflow-x-hidden">
          <div className="p-4 lg:p-12 space-y-10 lg:space-y-16 max-w-7xl mx-auto">
-            <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 overflow-hidden">
-               <div className="space-y-2">
-                  <div className="flex items-center gap-2 mb-2">
+            <header className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+               <div className="space-y-3">
+                  <div className="flex items-center gap-2">
                      <div className="w-8 h-[2px] bg-primary rounded-full" />
                      <span className="text-[10px] font-black uppercase tracking-[0.5em] text-primary">Intelligence Hub</span>
                   </div>
-                  <h1 className="text-3xl lg:text-8xl font-black tracking-tighter text-white uppercase italic leading-[0.8] mb-3">
+                  <h1 className="text-3xl lg:text-8xl font-black tracking-tighter text-white uppercase italic leading-[0.8]">
                      GPA <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500 italic">Sentinel</span>
                   </h1>
-                  <p className="text-[10px] lg:text-lg font-medium italic uppercase tracking-widest opacity-60 text-muted-foreground">High-Precision Academic Performance Analytics</p>
+                  <p className="text-[10px] lg:text-lg font-medium italic uppercase tracking-[0.2em] opacity-40 text-white">Precision Analytics Engine</p>
                </div>
                
-               {/* Unified Master Switcher */}
-               <div className="grid grid-cols-3 p-1 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-xl w-full md:w-[450px]">
+               {/* Premium Segmented Switcher */}
+               <div className="relative p-1.5 bg-white/5 rounded-[2rem] border border-white/10 backdrop-blur-2xl w-full md:w-[480px] flex items-center h-16 shadow-2xl">
+                  {/* Sliding Background */}
+                  <div 
+                     className="absolute top-1.5 bottom-1.5 bg-primary rounded-[1.6rem] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-[0_0_25px_rgba(124,58,237,0.4)]"
+                     style={{ 
+                        left: mode === "auto" ? "6px" : mode === "manual" ? "33.33%" : "66.66%",
+                        width: "calc(33.33% - 8px)"
+                     }}
+                  />
+                  
                   <button 
                      onClick={() => setMode("auto")}
-                     className={`px-1 py-3 rounded-xl text-[8px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "auto" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     className={`relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-300 ${mode === "auto" ? "text-white" : "text-white/30"}`}
                   >
-                     Auto Sync
+                     <span className="text-[10px] font-black uppercase tracking-tighter">Auto</span>
+                     <span className="text-[7px] font-bold uppercase opacity-60">Sync</span>
                   </button>
+                  
                   <button 
                      onClick={() => setMode("manual")}
-                     className={`px-1 py-3 rounded-xl text-[8px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "manual" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     className={`relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-300 ${mode === "manual" ? "text-white" : "text-white/30"}`}
                   >
-                     Simulation
+                     <span className="text-[10px] font-black uppercase tracking-tighter">Simulation</span>
+                     <span className="text-[7px] font-bold uppercase opacity-60">Manual</span>
                   </button>
+                  
                   <button 
                      onClick={() => setMode("cgpa")}
-                     className={`px-1 py-3 rounded-xl text-[8px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "cgpa" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     className={`relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-300 ${mode === "cgpa" ? "text-white" : "text-white/30"}`}
                   >
-                     CGPA Cal
+                     <span className="text-[10px] font-black uppercase tracking-tighter">CGPA</span>
+                     <span className="text-[7px] font-bold uppercase opacity-60">Calculus</span>
                   </button>
                </div>
             </header>

@@ -5,19 +5,25 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
   const { pathname } = request.nextUrl;
 
-  // 1. Handle Root Path
+  // 1. Root redirect
   if (pathname === '/') {
-    return NextResponse.redirect(new URL(token ? '/dashboard' : '/login', request.url));
+    const url = request.nextUrl.clone();
+    url.pathname = token ? '/dashboard' : '/login';
+    return NextResponse.redirect(url);
   }
 
-  // 2. If on login page and already have token, go to dashboard
-  if (pathname === '/login' && token) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
-  }
-
-  // 3. If on dashboard and no token, go to login
+  // 2. Auth protection
   if (pathname.startsWith('/dashboard') && !token) {
-    return NextResponse.redirect(new URL('/login', request.url));
+    const url = request.nextUrl.clone();
+    url.pathname = '/login';
+    return NextResponse.redirect(url);
+  }
+
+  // 3. Login redirect if already auth
+  if (pathname === '/login' && token) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/dashboard';
+    return NextResponse.redirect(url);
   }
 
   return NextResponse.next();
