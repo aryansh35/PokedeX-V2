@@ -45,7 +45,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-black">
+        {/* Mesh Aurora Background 🛡️ */}
+        <div className="mesh-bg">
+          <div className="mesh-orb mesh-orb-1" />
+          <div className="mesh-orb mesh-orb-2" />
+        </div>
         {children}
         <Script id="pwa-register" strategy="afterInteractive">
           {`

@@ -1,63 +1,111 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
-  --primary: 263.4 70% 50.4%;
-  --primary-foreground: 210 40% 98%;
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-  --border: 240 3.7% 15.9%;
+  --primary: #7c3aed;
+  --primary-rgb: 124, 58, 237;
+  --bg-color: #000000;
+  --glass-bg: rgba(20, 20, 20, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+@theme {
+  --color-primary: #7c3aed;
+  --animate-scan: scan 3s linear infinite;
+  --animate-gradient-x: gradient-x 6s ease infinite;
+  
+  @keyframes scan {
+    0% { transform: translateY(-100%); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(1000%); opacity: 0; }
+  }
+  
+  @keyframes gradient-x {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes authorize-spin {
+    0% { transform: rotate(0deg) scale(1); filter: brightness(1); }
+    50% { transform: rotate(180deg) scale(1.2); filter: brightness(1.5); }
+    100% { transform: rotate(360deg) scale(1.4); filter: brightness(2); opacity: 0; }
+  }
+  
+  --animate-authorize: authorize-spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @layer base {
-  body {
-    @apply bg-[#0a0a0b] text-white antialiased;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: var(--bg-color);
+    color: white;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-@layer components {
-  .glass-card {
-    @apply bg-white/[0.02] backdrop-blur-2xl border border-white/10 shadow-2xl;
-  }
-  
-  .tap-highlight-none {
-    -webkit-tap-highlight-color: transparent;
-  }
+/* Glassmorphism Structural Classes */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-@keyframes scan {
-  0% { transform: translateY(-100%); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateY(1000%); opacity: 0; }
+.tap-highlight-none {
+  -webkit-tap-highlight-color: transparent;
 }
 
-.animate-scan {
-  animation: scan 3s linear infinite;
+/* Mesh Aurora Background - The "Secret Sauce" for Visual Depth */
+.mesh-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  z-index: -1;
+  background-color: #000000;
+  overflow: hidden;
 }
 
-@keyframes gradient-x {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.mesh-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+  animation: floatOrb 20s infinite alternate ease-in-out;
 }
 
-.animate-gradient-x {
-  background-size: 200% 200%;
-  animation: gradient-x 6s ease infinite;
+.mesh-orb-1 {
+  width: 60vw; height: 60vw;
+  background: radial-gradient(circle, rgba(124,58,237,0.3) 0%, transparent 70%);
+  top: -10%; left: -10%;
 }
 
-@keyframes authorize-spin {
-  0% { transform: rotate(0deg) scale(1); filter: brightness(1); }
-  50% { transform: rotate(180deg) scale(1.2); filter: brightness(1.5); }
-  100% { transform: rotate(360deg) scale(1.4); filter: brightness(2); opacity: 0; }
+.mesh-orb-2 {
+  width: 50vw; height: 50vw;
+  background: radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%);
+  bottom: 0%; right: -10%;
+  animation-delay: -5s;
 }
 
-.animate-authorize {
-  animation: authorize-spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+@keyframes floatOrb {
+  0% { transform: translateY(0) scale(1) rotate(0deg); }
+  50% { transform: translateY(10%) scale(1.1) rotate(45deg); }
+  100% { transform: translateY(-10%) scale(0.9) rotate(-45deg); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
 }
