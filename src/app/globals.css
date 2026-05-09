@@ -1,15 +1,18 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-primary: #7c3aed;
-  --color-primary-foreground: #ffffff;
-  --color-background: #09090b;
-  --color-foreground: #fafafa;
-  --color-card: #121214;
-  --color-card-foreground: #fafafa;
-  --color-muted: #27272a;
-  --color-muted-foreground: #a1a1aa;
-  --color-border: rgba(255, 255, 255, 0.06);
+@layer base {
+  :root {
+    --primary: 262.1 83.3% 57.8%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --border: 240 3.7% 15.9%;
+  }
 }
 
 @layer base {
@@ -30,7 +33,7 @@
   }
 
   .text-gradient {
-    @apply bg-linear-to-br from-white to-white/40 bg-clip-text text-transparent;
+    @apply bg-gradient-to-br from-white to-white/40 bg-clip-text text-transparent;
   }
 
   .btn-primary {
