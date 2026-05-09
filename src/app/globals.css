@@ -1,21 +1,33 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-primary: #7c3aed;
-  --color-primary-foreground: #ffffff;
-  --color-background: #0a0a0b;
-  --color-foreground: #fafafa;
+:root {
+  --primary: 263.4 70% 50.4%;
+  --primary-foreground: 210 40% 98%;
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --border: 240 3.7% 15.9%;
 }
 
 @layer base {
   body {
     @apply bg-[#0a0a0b] text-white antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }
 
 @layer components {
   .glass-card {
     @apply bg-white/[0.02] backdrop-blur-2xl border border-white/10 shadow-2xl;
+  }
+  
+  .tap-highlight-none {
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -38,4 +50,14 @@
 .animate-gradient-x {
   background-size: 200% 200%;
   animation: gradient-x 6s ease infinite;
+}
+
+@keyframes authorize-spin {
+  0% { transform: rotate(0deg) scale(1); filter: brightness(1); }
+  50% { transform: rotate(180deg) scale(1.2); filter: brightness(1.5); }
+  100% { transform: rotate(360deg) scale(1.4); filter: brightness(2); opacity: 0; }
+}
+
+.animate-authorize {
+  animation: authorize-spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
