@@ -5,18 +5,14 @@ export function middleware(request: NextRequest) {
   const token = request.cookies.get('token')?.value;
   const { pathname } = request.nextUrl;
 
-  // 1. Auth protection
+  // Only protect the dashboard routes
   if (pathname.startsWith('/dashboard') && !token) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // 2. Login redirect if already auth
+  // Prevent logged in users from seeing the login page
   if (pathname === '/login' && token) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/dashboard';
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
   return NextResponse.next();
