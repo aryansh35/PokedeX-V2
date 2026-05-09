@@ -31,12 +31,11 @@ export default function LoginPage() {
   const [showSessionGuard, setShowSessionGuard] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
 
+  // Removed aggressive reset to prevent session loss on app restart
   useEffect(() => {
-    reset();
-    if (typeof window !== 'undefined') {
-      window.localStorage.clear();
-    }
-  }, [reset]);
+    // If we already have credentials in Zustand and a token cookie, we could redirect here, 
+    // but the root page already handles the /dashboard redirect which is safer.
+  }, []);
 
   const step = email?.digest.length === 0 ? 1 : 2;
 

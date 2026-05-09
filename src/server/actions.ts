@@ -132,8 +132,8 @@ export async function loginAction(formData: FormData) {
     const result = await loginToSRM(email, password);
     if (result.success && result.cookies) {
       const cookieStore = await cookies();
-      cookieStore.set("token", result.cookies, { httpOnly: true, secure: true, maxAge: 86400, path: "/" });
-      cookieStore.set("user", email, { httpOnly: true, secure: true, maxAge: 86400, path: "/" });
+      cookieStore.set("token", result.cookies, { httpOnly: true, secure: true, maxAge: 2592000, path: "/" });
+      cookieStore.set("user", email, { httpOnly: true, secure: true, maxAge: 2592000, path: "/" });
       return { success: true };
     }
     return { success: false, error: result.error || "Authentication failed" };
