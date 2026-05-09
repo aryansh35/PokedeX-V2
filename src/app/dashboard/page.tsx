@@ -100,7 +100,35 @@ export default function MasterDashboard() {
 
    if (loading) return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b]">
-         <RefreshCw className="w-8 h-8 text-primary animate-spin" />
+         <div className="flex flex-col items-center gap-6">
+            <RefreshCw className="w-12 h-12 text-primary animate-spin" />
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-primary/40 animate-pulse">Establishing Link...</p>
+         </div>
+      </div>
+   );
+
+   if (!data && !loading) return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b] p-6">
+         <div className="glass-card rounded-[2.5rem] p-8 lg:p-12 border-rose-500/20 text-center space-y-6 max-w-md w-full">
+            <div className="w-16 h-16 bg-rose-500/10 rounded-2xl flex items-center justify-center text-rose-500 mx-auto">
+               <AlertCircle size={32} />
+            </div>
+            <div className="space-y-2">
+               <h2 className="text-2xl font-black uppercase italic tracking-tighter text-white">Link Severed</h2>
+               <p className="text-xs font-bold text-white/40 uppercase tracking-widest leading-relaxed">
+                  Could not establish a secure connection to SRM Academia. 
+               </p>
+            </div>
+            <button 
+               onClick={() => window.location.reload()}
+               className="w-full py-4 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-2xl shadow-primary/20 active:scale-95 transition-all"
+            >
+               Retry Connection
+            </button>
+            <Link href="/login" className="block text-[9px] font-black uppercase text-white/20 tracking-widest hover:text-white transition-colors">
+               Return to Login
+            </Link>
+         </div>
       </div>
    );
 
