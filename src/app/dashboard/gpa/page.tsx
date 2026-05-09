@@ -119,10 +119,10 @@ export default function GPAPage() {
                </div>
                
                {/* Premium Segmented Switcher */}
-               <div className="relative p-1.5 bg-white/5 rounded-[2rem] border border-white/10 backdrop-blur-2xl w-full md:w-[480px] flex items-center h-16 shadow-2xl">
-                  {/* Sliding Background */}
+               <div className="relative p-1.5 bg-white/5 rounded-[2rem] border border-white/10 backdrop-blur-2xl w-full md:w-[480px] flex items-center h-16 shadow-2xl select-none">
+                  {/* Sliding Background - Pointer Events None ensures it never blocks clicks */}
                   <div 
-                     className="absolute top-1.5 bottom-1.5 bg-primary rounded-[1.6rem] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-[0_0_25px_rgba(124,58,237,0.4)]"
+                     className="absolute top-1.5 bottom-1.5 bg-primary rounded-[1.6rem] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-[0_0_25px_rgba(124,58,237,0.4)] pointer-events-none"
                      style={{ 
                         left: mode === "auto" ? "6px" : mode === "manual" ? "33.33%" : "66.66%",
                         width: "calc(33.33% - 8px)"
@@ -131,7 +131,7 @@ export default function GPAPage() {
                   
                   <button 
                      onClick={() => setMode("auto")}
-                     className={`relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-300 ${mode === "auto" ? "text-white" : "text-white/30"}`}
+                     className={`relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-300 outline-none tap-highlight-none ${mode === "auto" ? "text-white" : "text-white/30"}`}
                   >
                      <span className="text-[10px] font-black uppercase tracking-tighter">Auto</span>
                      <span className="text-[7px] font-bold uppercase opacity-60">Sync</span>
@@ -139,7 +139,7 @@ export default function GPAPage() {
                   
                   <button 
                      onClick={() => setMode("manual")}
-                     className={`relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-300 ${mode === "manual" ? "text-white" : "text-white/30"}`}
+                     className={`relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-300 outline-none tap-highlight-none ${mode === "manual" ? "text-white" : "text-white/30"}`}
                   >
                      <span className="text-[10px] font-black uppercase tracking-tighter">Simulation</span>
                      <span className="text-[7px] font-bold uppercase opacity-60">Manual</span>
@@ -147,7 +147,7 @@ export default function GPAPage() {
                   
                   <button 
                      onClick={() => setMode("cgpa")}
-                     className={`relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-300 ${mode === "cgpa" ? "text-white" : "text-white/30"}`}
+                     className={`relative z-10 flex-1 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-300 outline-none tap-highlight-none ${mode === "cgpa" ? "text-white" : "text-white/30"}`}
                   >
                      <span className="text-[10px] font-black uppercase tracking-tighter">CGPA</span>
                      <span className="text-[7px] font-bold uppercase opacity-60">Calculus</span>
