@@ -1,28 +1,23 @@
-const CACHE_NAME = 'pokedex-v2-cache-v1.4';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/login',
-  '/manifest.json',
-  '/icon-192x192.png',
-  '/icon-512x512.png',
-  '/apple-touch-icon.png'
-];
-
+// PokédeX v1.3.5 Service Worker
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
+  self.skipWaiting();
 });
 
-self.addEventListener('fetch', (event) => {
-  // Only intercept GET requests
-  if (event.request.method !== 'GET') return;
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim());
+});
 
+// Minimal fetch handler to allow for PWA installation without aggressive caching
+// This prevents the "Stuck Spinner" and "Retry" issues on mobile entry
+self.addEventListener('fetch', (event) => {
+  // We let the server handle the logic for root and auth paths
+  if (event.request.mode === 'navigate') {
+    return;
+  }
+  
   event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request);
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
     })
   );
 });

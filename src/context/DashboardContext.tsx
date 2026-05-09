@@ -19,7 +19,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
    const [dayOrder, setDayOrder] = useState(0);
    const [lastSynced, setLastSynced] = useState<number | null>(null);
 
-   const load = useCallback(async (force: boolean = false) => {
+   const load = useCallback(async (force: boolean = false, isRetry: boolean = false) => {
       setLoading(true);
       try {
          const cached = localStorage.getItem("pokedex_cache");
@@ -86,11 +86,17 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             setData(currentCache.data);
             setDayOrder(currentCache.dayOrder || 0);
             setLastSynced(currentCache.dynamicTimestamp);
+         } else if (!isRetry) {
+            // Automatic Tactical Retry if fresh login fails
+            console.warn("Retrying SRM Link...");
+            setTimeout(() => load(force, true), 1000);
+            return; 
          }
       } catch (error) {
          console.error("Dashboard Intelligence Error:", error);
+         if (!isRetry) setTimeout(() => load(force, true), 1000);
       } finally {
-         setLoading(false);
+         if (!isRetry) setLoading(false);
       }
    }, []);
 
