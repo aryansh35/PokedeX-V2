@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pokedex-v2-cache-v1.3';
+const CACHE_NAME = 'pokedex-v2-cache-v1.4';
 const ASSETS_TO_CACHE = [
   '/',
   '/login',
@@ -17,9 +17,12 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Only intercept GET requests
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    fetch(event.request).catch(() => {
+      return caches.match(event.request);
     })
   );
 });
