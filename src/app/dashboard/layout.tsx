@@ -10,7 +10,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { DashboardProvider, useDashboard } from "@/context/DashboardContext";
-import { logoutAction } from "@/server/actions";
 
 const Pokeball = ({ className }: { className?: string }) => (
   <svg 
@@ -141,15 +140,10 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className="p-6 border-t border-white/5">
-          <button 
-            onClick={async () => {
-              await logoutAction();
-            }}
-            className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-rose-500 hover:bg-rose-500/10 transition-all cursor-pointer"
-          >
+          <Link href="/login" className="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-rose-500 hover:bg-rose-500/10 transition-all">
             <LogOut size={20} />
             Logout
-          </button>
+          </Link>
         </div>
       </aside>
 
