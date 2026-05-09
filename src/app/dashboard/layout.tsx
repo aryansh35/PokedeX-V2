@@ -140,10 +140,17 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className="p-6 border-t border-white/5">
-          <Link href="/login" className="flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-rose-500 hover:bg-rose-500/10 transition-all">
+          <button 
+            onClick={async () => {
+              const { logoutAction } = await import("@/server/actions");
+              localStorage.clear(); // Wipe academic cache
+              await logoutAction();
+            }}
+            className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-rose-500 hover:bg-rose-500/10 transition-all active:scale-95"
+          >
             <LogOut size={20} />
             Logout
-          </Link>
+          </button>
         </div>
       </aside>
 
