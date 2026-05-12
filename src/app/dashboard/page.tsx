@@ -325,7 +325,7 @@ export default function MasterDashboard() {
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {todayMissions.map((mission: any, i: number) => (
-                           <div key={i} className={`glass-card rounded-4xl p-5 lg:p-6 border-2 transition-all group relative ${mission.isLive ? 'border-emerald-500/50 bg-emerald-500/[0.02] shadow-[0_0_40px_rgba(16,185,129,0.1)]' : 'border-white/5 hover:border-primary/20 hover:bg-primary/[0.02]'}`}>
+                           <div key={i} className={`glass-card rounded-[2.5rem] p-5 lg:p-6 border-2 transition-all group relative ${mission.isLive ? 'border-emerald-500/50 bg-emerald-500/[0.02] shadow-[0_0_40px_rgba(16,185,129,0.1)]' : 'border-white/5 hover:border-primary/20 hover:bg-primary/[0.02]'}`}>
                               {mission.isLive && (
                                  <div className="absolute -top-3 left-6 px-3 py-1 bg-emerald-500 rounded-full flex items-center gap-2 shadow-lg shadow-emerald-500/20 animate-pulse-subtle">
                                     <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
@@ -334,7 +334,7 @@ export default function MasterDashboard() {
                               )}
                               <div className="flex items-start justify-between mb-4 lg:mb-6">
                                  <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                                        <Clock size={18} />
                                     </div>
                                     <div>
@@ -342,13 +342,13 @@ export default function MasterDashboard() {
                                        <p className="text-xs lg:text-sm font-bold text-white/60">{mission.time}</p>
                                     </div>
                                  </div>
-                                 <div className="px-3 py-1 bg-white/5 rounded-lg text-[9px] lg:text-[10px] font-black text-muted-foreground uppercase">
+                                 <div className="px-3 py-1 bg-white/5 rounded-xl text-[9px] lg:text-[10px] font-black text-muted-foreground uppercase">
                                     Slot {mission.activeSlot}
                                  </div>
                               </div>
                               <h4 className="text-lg lg:text-xl font-black text-white uppercase italic mb-2 line-clamp-1">{mission.title}</h4>
                               <div className="flex items-center gap-3 mt-4 border-t border-white/5 pt-4">
-                                 <div className="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center text-emerald-500">
+                                 <div className="w-8 h-8 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500">
                                     <MapPin size={14} />
                                  </div>
                                  <div>

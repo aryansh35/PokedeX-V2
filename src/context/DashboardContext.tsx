@@ -82,6 +82,17 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             setData(merged);
             setDayOrder(liveDO);
             setLastSynced(updatedCache.dynamicTimestamp);
+         } else if (res.error === "AUTH_ERROR") {
+            // CRITICAL: Session terminated elsewhere. Wipe and Redirect.
+            localStorage.clear();
+            sessionStorage.clear();
+            if ('caches' in window) {
+               caches.keys().then(names => {
+                  names.forEach(name => caches.delete(name));
+               });
+            }
+            window.location.href = "/login";
+            return;
          } else if (currentCache) {
             setData(currentCache.data);
             setDayOrder(currentCache.dayOrder || 0);

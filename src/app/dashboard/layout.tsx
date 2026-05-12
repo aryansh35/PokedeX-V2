@@ -113,7 +113,7 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
 
         <div className="p-8 pt-6 lg:pt-8">
           <div className="flex items-center gap-3 group cursor-default">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform">
+            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform">
               <Pokeball className="w-6 h-6 text-white" />
             </div>
             <h1 className="text-2xl font-black tracking-tighter italic">Pokéde<span className="text-primary">X</span></h1>
@@ -143,7 +143,16 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
           <button 
             onClick={async () => {
               const { logoutAction } = await import("@/server/actions");
-              localStorage.clear(); // Wipe academic cache
+              
+              // 1. Wipe all client-side storage
+              localStorage.clear();
+              if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                await Promise.all(cacheNames.map(name => caches.delete(name)));
+              }
+              sessionStorage.clear();
+              
+              // 2. Perform server-side logout (clears cookies and redirects)
               await logoutAction();
             }}
             className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-bold text-rose-500 hover:bg-rose-500/10 transition-all active:scale-95"

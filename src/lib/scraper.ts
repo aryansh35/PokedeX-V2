@@ -48,7 +48,13 @@ export async function loginToSRM(emailInput: string, password: string) {
 
 async function fetchSanitized(url: string, cookies: string) {
   try {
-    const res = await fetch(url, { headers: { "Cookie": cookies, "User-Agent": "Mozilla/5.0" } });
+    const res = await fetch(url, { headers: { "Cookie": cookies, "User-Agent": "Mozilla/5.0" }, redirect: "follow" });
+    
+    // If we're redirected to the sign-in page, the session is dead
+    if (res.url.includes("signin") || res.url.includes("accounts.srmist.edu.in")) {
+      return "AUTH_ERROR";
+    }
+
     const raw = await res.text();
     const match = raw.match(/\.sanitize\(\s*(['"])((?:(?!\1)[\s\S]|\\\1)*)\1\s*\)/);
     if (!match) return "";
@@ -67,11 +73,13 @@ export async function scrapeEverything(cookies: string, loginEmail?: string, tar
   let attHtml = "";
   if (shouldFetch("attendance") || shouldFetch("marks") || shouldFetch("profile")) {
      attHtml = await fetchSanitized(`${BASE_URL}/srm_university/academia-academic-services/page/My_Attendance`, cookies);
+     if (attHtml === "AUTH_ERROR") throw new Error("AUTH_ERROR");
   }
 
   let marksHtml = "";
   if (shouldFetch("marks") || shouldFetch("profile")) {
      marksHtml = await fetchSanitized(`${BASE_URL}/srm_university/academia-academic-services/page/My_Internal_Marks`, cookies);
+     if (marksHtml === "AUTH_ERROR") throw new Error("AUTH_ERROR");
      if (!marksHtml && attHtml) {
         console.log("💡 [POKÉDEX] ATTENDANCE DETECTED; FALLING BACK TO INTEGRATED MARKS SCAN.");
         marksHtml = attHtml;
@@ -91,6 +99,7 @@ export async function scrapeEverything(cookies: string, loginEmail?: string, tar
     for (const url of ttUrls) {
       console.log(`🔍 [POKÉDEX] PROBING TIMETABLE PATH: ${url.split('/').pop()}`);
       ttHtml = await fetchSanitized(url, cookies);
+      if (ttHtml === "AUTH_ERROR") throw new Error("AUTH_ERROR");
       if (ttHtml && ttHtml.includes("Course Code")) {
         console.log("✅ [POKÉDEX] TIMETABLE MATRIX IDENTIFIED.");
         break;
@@ -246,6 +255,7 @@ export async function scrapeDayOrder(cookies: string) {
   try {
     const html = await fetchSanitized(`${BASE_URL}/srm_university/academia-academic-services/page/Course_Details_Report`, cookies);
     if (!html) return 0;
+    if (html === "AUTH_ERROR") throw new Error("AUTH_ERROR");
 
     const $ = load(html);
     const text = $("body").text();

@@ -176,6 +176,7 @@ export async function getDashboardData(targets?: string[]) {
     
     return { success: true, data };
   } catch (error: any) {
+    if (error.message === "AUTH_ERROR") return { success: false, error: "AUTH_ERROR" };
     return { success: false, error: error.message };
   }
 }
@@ -193,6 +194,7 @@ export async function getDayOrderAction() {
     const dayOrder = await scrapeDayOrder(session);
     return { success: true, dayOrder: dayOrder || fallbackOrder };
   } catch (error: any) {
+    if (error.message === "AUTH_ERROR") return { success: false, error: "AUTH_ERROR" };
     return { success: true, dayOrder: fallbackOrder };
   }
 }
