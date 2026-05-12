@@ -103,8 +103,37 @@ export default function GPAPage() {
       });
    };
 
+   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 });
+   const [touchEnd, setTouchEnd] = useState({ x: 0, y: 0 });
+
+   const handleTouchStart = (e: React.TouchEvent) => {
+      setTouchStart({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
+   };
+
+   const handleTouchMove = (e: React.TouchEvent) => {
+      setTouchEnd({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
+   };
+
+   const handleTouchEnd = () => {
+      const dx = touchStart.x - touchEnd.x;
+      const dy = touchStart.y - touchEnd.y;
+
+      // Only trigger if horizontal swipe is dominant and significant
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 70) {
+         const modes: ("auto" | "manual" | "cgpa")[] = ["auto", "manual", "cgpa"];
+         const currentIndex = modes.indexOf(mode);
+         if (dx > 0 && currentIndex < modes.length - 1) setMode(modes[currentIndex + 1]);
+         if (dx < 0 && currentIndex > 0) setMode(modes[currentIndex - 1]);
+      }
+   };
+
    return (
-      <div className="pb-32 animate-in fade-in slide-in-from-bottom-4 duration-700 overflow-x-hidden">
+      <div
+         className="pb-32 animate-in fade-in slide-in-from-bottom-4 duration-700 overflow-x-hidden"
+         onTouchStart={handleTouchStart}
+         onTouchMove={handleTouchMove}
+         onTouchEnd={handleTouchEnd}
+      >
          <div className="p-4 lg:p-12 space-y-10 lg:space-y-16 max-w-7xl mx-auto">
             <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 overflow-hidden">
                <div className="space-y-2">
@@ -124,7 +153,7 @@ export default function GPAPage() {
                      onClick={() => setMode("auto")}
                      className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "auto" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                   >
-                     Auto Sync
+                     Predicted
                   </button>
                   <button
                      onClick={() => setMode("manual")}
@@ -136,7 +165,7 @@ export default function GPAPage() {
                      onClick={() => setMode("cgpa")}
                      className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "cgpa" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                   >
-                     CGPA Cal
+                     CGPA
                   </button>
                </div>
             </header>
@@ -277,8 +306,8 @@ export default function GPAPage() {
                                     <button
                                        onClick={() => mode === "manual" && toggleManualGrade(course.courseCode)}
                                        className={`w-16 h-16 shrink-0 bg-white/[0.02] border flex items-center justify-center rounded-2xl text-2xl font-black italic transition-all group-hover:scale-110 shadow-2xl ${mode === "manual"
-                                             ? "cursor-pointer border-primary ring-2 ring-primary/20 ring-offset-4 ring-offset-[#0a0a0b] text-primary bg-primary/5 animate-pulse"
-                                             : "cursor-default border-white/5 text-white group-hover:text-primary"
+                                          ? "cursor-pointer border-primary ring-2 ring-primary/20 ring-offset-4 ring-offset-[#0a0a0b] text-primary bg-primary/5 animate-pulse"
+                                          : "cursor-default border-white/5 text-white group-hover:text-primary"
                                           }`}
                                     >
                                        {course.grade}
