@@ -2,7 +2,7 @@
 
 import { useDashboard } from "@/context/DashboardContext";
 import { RefreshCw, Calculator, TrendingUp, Star, Award, BookOpen, Target, Plus, Trash2, GraduationCap } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 export default function GPAPage() {
@@ -13,13 +13,7 @@ export default function GPAPage() {
    const [manualGrades, setManualGrades] = useState<Record<string, { grade: string; points: number }>>({});
    const [semesters, setSemesters] = useState<any[]>([{ id: 1, sgpa: "", credits: "" }]);
 
-   const [mounted, setMounted] = useState(false);
-
-   useEffect(() => {
-      setMounted(true);
-   }, []);
-
-   if (!mounted || loading) return (
+   if (loading) return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b]">
          <RefreshCw className="w-8 h-8 text-primary animate-spin" />
       </div>
