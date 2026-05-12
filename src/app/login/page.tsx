@@ -7,22 +7,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 const Pokeball = ({ className }: { className?: string }) => (
-  <svg
-    viewBox="0 0 100 100"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    {/* Background Circle */}
-    <circle cx="50" cy="50" r="44" fill="white" />
-    {/* Top Half (Theme Color) */}
-    <path d="M50 6A44 44 0 0 1 94 50H62A12 12 0 0 0 38 50H6A44 44 0 0 1 50 6Z" fill="currentColor" />
-    {/* Center Button & Lines */}
-    <circle cx="50" cy="50" r="12" fill="white" stroke="#000" strokeWidth="6" />
-    <path d="M2 50H38" stroke="#000" strokeWidth="6" strokeLinecap="round" />
-    <path d="M62 50H98" stroke="#000" strokeWidth="6" strokeLinecap="round" />
-    <circle cx="50" cy="50" r="47" stroke="#000" strokeWidth="6" />
-  </svg>
+  <img src="/logo.png" alt="Pokéball" className={className} />
 );
 
 export default function LoginPage() {
@@ -148,8 +133,8 @@ export default function LoginPage() {
         <div className="text-center space-y-6">
           <div className="relative inline-block group">
             <div className={`absolute inset-0 bg-primary/20 blur-2xl rounded-full scale-150 transition-opacity duration-700 ${isAuthorized ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
-            <div className={`relative inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.3)] transform transition-all duration-500 border border-white/20 ${isAuthorized ? 'animate-authorize' : '-rotate-6 group-hover:rotate-0'}`}>
-              <Pokeball className="w-14 h-14 text-white drop-shadow-lg" />
+            <div className={`relative inline-flex items-center justify-center w-24 h-24 transform transition-all duration-500 ${isAuthorized ? 'animate-authorize' : '-rotate-6 group-hover:rotate-0'}`}>
+              <Pokeball className="w-20 h-20 drop-shadow-2xl" />
             </div>
           </div>
           <div className="space-y-2">
