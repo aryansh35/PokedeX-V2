@@ -134,50 +134,52 @@ export default function GPAPage() {
          onTouchMove={handleTouchMove}
          onTouchEnd={handleTouchEnd}
       >
-         <div className="p-4 lg:p-12 space-y-10 lg:space-y-16 max-w-7xl mx-auto">
-            <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 overflow-hidden">
-               <div className="space-y-2">
-                  <div className="flex items-center gap-2 mb-2">
-                     <div className="w-8 h-[2px] bg-primary rounded-full" />
-                     <span className="text-[10px] font-black uppercase tracking-[0.5em] text-primary">Intelligence Hub</span>
+         <div className="p-4 lg:p-12 space-y-6 lg:space-y-12 max-w-7xl mx-auto">
+            <div className="space-y-3">
+               <header className="flex flex-col md:flex-row md:items-end justify-between gap-6 overflow-hidden">
+                  <div className="space-y-2">
+                     <div className="flex items-center gap-2 mb-2">
+                        <div className="w-8 h-[2px] bg-primary rounded-full" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.5em] text-primary">Intelligence Hub</span>
+                     </div>
+                     <h1 className="text-3xl lg:text-8xl font-black tracking-tighter text-white uppercase italic leading-[0.8] mb-3">
+                        GPA <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500 italic">Sentinel</span>
+                     </h1>
+                     <p className="text-[10px] lg:text-lg font-medium italic uppercase tracking-widest opacity-60 text-muted-foreground">High-Precision Academic Performance Analytics</p>
                   </div>
-                  <h1 className="text-3xl lg:text-8xl font-black tracking-tighter text-white uppercase italic leading-[0.8] mb-3">
-                     GPA <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500 italic">Sentinel</span>
-                  </h1>
-                  <p className="text-[10px] lg:text-lg font-medium italic uppercase tracking-widest opacity-60 text-muted-foreground">High-Precision Academic Performance Analytics</p>
-               </div>
 
-               {/* Unified Master Switcher */}
-               <div className="grid grid-cols-3 p-1.5 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-xl w-full md:w-[450px]">
-                  <button
-                     onClick={() => setMode("auto")}
-                     className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "auto" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
-                  >
-                     Predicted
-                  </button>
-                  <button
-                     onClick={() => setMode("manual")}
-                     className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "manual" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
-                  >
-                     Simulation
-                  </button>
-                  <button
-                     onClick={() => setMode("cgpa")}
-                     className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "cgpa" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
-                  >
-                     CGPA
-                  </button>
-               </div>
-            </header>
+                  {/* Unified Master Switcher */}
+                  <div className="grid grid-cols-3 p-1.5 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-xl w-full md:w-[450px]">
+                     <button
+                        onClick={() => setMode("auto")}
+                        className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "auto" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     >
+                        Predicted
+                     </button>
+                     <button
+                        onClick={() => setMode("manual")}
+                        className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "manual" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     >
+                        Simulation
+                     </button>
+                     <button
+                        onClick={() => setMode("cgpa")}
+                        className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "cgpa" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     >
+                        CGPA
+                     </button>
+                  </div>
+               </header>
 
-            {/* Mobile Swipe Indicator */}
-            <div className="flex lg:hidden items-center justify-center gap-3 py-2 text-[9px] font-bold text-white/20 uppercase tracking-[0.3em] animate-pulse">
-               <span className="w-4 h-[1px] bg-white/10" />
-               <span>Swipe to Switch Mode</span>
-               <span className="w-4 h-[1px] bg-white/10" />
+               {/* Mobile Swipe Indicator */}
+               <div className="flex lg:hidden items-center justify-center gap-3 py-1 text-[8px] font-bold text-white/20 uppercase tracking-[0.3em] animate-pulse">
+                  <span className="w-4 h-[1px] bg-white/10" />
+                  <span>Swipe to Switch Mode</span>
+                  <span className="w-4 h-[1px] bg-white/10" />
+               </div>
             </div>
 
-            <div key={mode} className="animate-in fade-in slide-in-from-right-4 duration-500">
+            <div key={mode} className="animate-in fade-in slide-in-from-right-4 duration-500 space-y-6 lg:space-y-12">
                {mode !== "cgpa" ? (
                   <>
                      {/* GPA Hero Card */}
