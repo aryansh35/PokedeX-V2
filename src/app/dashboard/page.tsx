@@ -428,27 +428,27 @@ export default function MasterDashboard() {
 
                   {/* Tactical Navigation */}
                   <div className="space-y-4">
-                     <Link href="/dashboard/attendance" className="glass-card rounded-[1.5rem] lg:rounded-[2rem] p-5 lg:p-6 border-white/5 flex items-center justify-between group hover:border-primary/20 transition-all">
+                     <Link href="/dashboard/attendance" className="glass-card rounded-[2.5rem] p-5 lg:p-6 border-white/5 flex items-center justify-between group hover:border-primary/20 transition-all">
                         <div className="flex items-center gap-4">
-                           <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                           <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                               <CheckCircle2 size={18} />
                            </div>
                            <span className="text-xs lg:text-base font-black uppercase italic">Attendance Hub</span>
                         </div>
                         <ChevronRight size={18} className="text-muted-foreground group-hover:translate-x-1 transition-all" />
                      </Link>
-                     <Link href="/dashboard/timetable" className="glass-card rounded-[1.5rem] lg:rounded-[2rem] p-5 lg:p-6 border-white/5 flex items-center justify-between group hover:border-primary/20 transition-all">
+                     <Link href="/dashboard/timetable" className="glass-card rounded-[2.5rem] p-5 lg:p-6 border-white/5 flex items-center justify-between group hover:border-primary/20 transition-all">
                         <div className="flex items-center gap-4">
-                           <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                           <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                               <Clock size={18} />
                            </div>
                            <span className="text-xs lg:text-base font-black uppercase italic">Matrix Engine</span>
                         </div>
                         <ChevronRight size={18} className="text-muted-foreground group-hover:translate-x-1 transition-all" />
                      </Link>
-                     <Link href="/dashboard/calendar" className="glass-card rounded-[1.5rem] lg:rounded-[2rem] p-5 lg:p-6 border-white/5 flex items-center justify-between group hover:border-primary/20 transition-all">
+                     <Link href="/dashboard/calendar" className="glass-card rounded-[2.5rem] p-5 lg:p-6 border-white/5 flex items-center justify-between group hover:border-primary/20 transition-all">
                         <div className="flex items-center gap-4">
-                           <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                           <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                               <LayoutGrid size={18} />
                            </div>
                            <span className="text-xs lg:text-base font-black uppercase italic">Academic Planner</span>

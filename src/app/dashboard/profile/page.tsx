@@ -34,7 +34,7 @@ export default function ProfilePage() {
          </header>
 
          {/* Identity Burst (Dashboard Style) */}
-         <div className="glass-card rounded-[2.5rem] lg:rounded-[3.5rem] p-6 lg:p-12 border-white/5 relative overflow-hidden group">
+         <div className="glass-card rounded-[2.5rem] lg:rounded-[3rem] p-6 lg:p-12 border-white/5 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-12 text-primary/5 group-hover:text-primary/10 transition-all pointer-events-none hidden lg:block">
                <Fingerprint size={280} strokeWidth={3} />
             </div>
@@ -81,7 +81,7 @@ export default function ProfilePage() {
 
          {/* Academic Meta Grid (Shifted Below) */}
          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-            <div className="glass-card rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-10 border-white/5 flex items-center gap-6 group hover:bg-white/[0.02] transition-all">
+            <div className="glass-card rounded-[2.5rem] p-6 lg:p-10 border-white/5 flex items-center gap-6 group hover:bg-white/[0.02] transition-all">
                <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white/5 rounded-xl lg:rounded-2xl flex items-center justify-center text-primary transition-all">
                   <Mail size={28} />
                </div>
@@ -112,7 +112,7 @@ export default function ProfilePage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                {profile.advisors?.map((adv: any, i: number) => (
-                  <div key={i} className="glass-card rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-10 border-white/5 relative overflow-hidden group">
+                  <div key={i} className="glass-card rounded-[2.5rem] p-6 lg:p-10 border-white/5 relative overflow-hidden group">
                      <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all" />
                      <p className="text-[10px] font-black uppercase text-primary tracking-widest mb-2">{adv.role}</p>
                      <h3 className="text-xl lg:text-3xl font-black mb-6 lg:mb-8 uppercase italic leading-none">{adv.name}</h3>

@@ -172,7 +172,7 @@ export default function TimetablePage() {
                </div>
                <button
                   onClick={handleDownload}
-                  className="flex items-center gap-3 px-6 lg:px-8 py-3 lg:py-4 bg-primary text-white rounded-[2rem] font-black uppercase italic shadow-2xl shadow-primary/30 hover:scale-105 transition-all group text-xs lg:text-base w-fit"
+                  className="flex items-center gap-3 px-6 lg:px-8 py-3 lg:py-4 bg-primary text-white rounded-2xl lg:rounded-3xl font-black uppercase italic shadow-2xl shadow-primary/30 hover:scale-105 transition-all group text-xs lg:text-base w-fit"
                >
                   <Download size={20} className="group-hover:-translate-y-1 transition-transform" />
                   Download TimeTable
@@ -192,12 +192,12 @@ export default function TimetablePage() {
                   </span>
                </div>
 
-               <div className="flex bg-white/5 p-1.5 rounded-[2rem] border border-white/5 w-full max-w-[95vw] overflow-x-auto no-scrollbar mx-auto">
+               <div className="flex bg-white/5 p-1.5 rounded-[2.5rem] border border-white/5 w-full max-w-[95vw] overflow-x-auto no-scrollbar mx-auto">
                   {[1, 2, 3, 4, 5].map((day) => (
                      <button
                         key={day}
                         onClick={() => setActiveDay(day)}
-                        className={`px-4 lg:px-8 py-3 rounded-[1.5rem] text-[10px] lg:text-sm font-black uppercase tracking-widest transition-all whitespace-nowrap flex-1 ${activeDay === day
+                        className={`px-4 lg:px-8 py-3 rounded-2xl lg:rounded-3xl text-[10px] lg:text-sm font-black uppercase tracking-widest transition-all whitespace-nowrap flex-1 ${activeDay === day
                            ? "bg-primary text-white shadow-xl shadow-primary/20"
                            : "text-muted-foreground hover:text-white hover:bg-white/5"
                            }`}
@@ -217,7 +217,7 @@ export default function TimetablePage() {
                      const isLive = isSlotLive(time);
 
                      return (
-                        <div key={i} className={`glass-card rounded-[2rem] p-8 border-2 transition-all group relative flex flex-col md:flex-row md:items-center justify-between gap-8 ${isLive ? 'border-emerald-500/50 bg-emerald-500/[0.02] shadow-[0_0_40px_rgba(16,185,129,0.1)]' : 'border-white/5 hover:border-primary/20 hover:bg-primary/[0.02]'} ${!course ? 'opacity-20 grayscale' : ''}`}>
+                        <div key={i} className={`glass-card rounded-[2.5rem] p-8 border-2 transition-all group relative flex flex-col md:flex-row md:items-center justify-between gap-8 ${isLive ? 'border-emerald-500/50 bg-emerald-500/[0.02] shadow-[0_0_40px_rgba(16,185,129,0.1)]' : 'border-white/5 hover:border-primary/20 hover:bg-primary/[0.02]'} ${!course ? 'opacity-20 grayscale' : ''}`}>
                            {isLive && (
                               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-emerald-500 rounded-full flex items-center gap-2 shadow-lg shadow-emerald-500/20 animate-pulse-subtle">
                                  <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
@@ -253,7 +253,7 @@ export default function TimetablePage() {
                                  </div>
                               </div>
                            ) : (
-                              <div className="flex-1 flex items-center justify-center border-2 border-dashed border-white/5 rounded-[1.5rem] py-6">
+                              <div className="flex-1 flex items-center justify-center border-2 border-dashed border-white/5 rounded-2xl lg:rounded-3xl py-6">
                                  <p className="text-xs font-black text-white/10 uppercase tracking-[0.3em]">{slot} — Free Slot</p>
                               </div>
                            )}

@@ -25,12 +25,12 @@ export default function CoursesPage() {
    );
 
    const CourseCard = ({ course, i }: { course: any; i: number }) => (
-      <div key={i} className="glass-card rounded-4xl lg:rounded-[3rem] p-6 lg:p-10 border-white/5 flex items-start gap-6 lg:gap-8 hover:bg-white/[0.02] transition-all group relative overflow-hidden">
+      <div key={i} className="glass-card rounded-[2.5rem] p-6 lg:p-10 border-white/5 flex items-start gap-6 lg:gap-8 hover:bg-white/[0.02] transition-all group relative overflow-hidden">
          <div className="absolute top-0 right-0 p-10 text-primary/5 group-hover:text-primary/10 transition-all">
             <Zap size={100} strokeWidth={3} />
          </div>
 
-         <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white/5 rounded-xl lg:rounded-2xl flex items-center justify-center text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-all flex-shrink-0 relative z-10">
+         <div className="w-14 h-14 lg:w-16 lg:h-16 bg-white/5 rounded-2xl flex items-center justify-center text-muted-foreground group-hover:text-primary group-hover:bg-primary/10 transition-all flex-shrink-0 relative z-10">
             <LayoutGrid className="w-6 h-6 lg:w-7 lg:h-7" />
          </div>
 

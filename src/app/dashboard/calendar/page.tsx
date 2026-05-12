@@ -64,7 +64,7 @@ export default function CalendarPage() {
 
          {/* Stats Overview */}
          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            <div className="glass-card rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 border-white/5 flex items-center gap-6 bg-primary/5">
+            <div className="glass-card rounded-[2.5rem] p-6 lg:p-8 border-white/5 flex items-center gap-6 bg-primary/5">
                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                   <CalendarIcon size={24} />
                </div>
@@ -74,7 +74,7 @@ export default function CalendarPage() {
                </div>
             </div>
             
-            <div className="glass-card rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 border-white/5 flex items-center gap-6 relative overflow-hidden group">
+            <div className="glass-card rounded-[2.5rem] p-6 lg:p-8 border-white/5 flex items-center gap-6 relative overflow-hidden group">
                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${dayOrder > 0 ? 'bg-blue-500/10 text-blue-500 animate-pulse' : 'bg-white/5 text-muted-foreground'}`}>
                   <Zap size={24} />
                </div>
@@ -86,7 +86,7 @@ export default function CalendarPage() {
                </div>
             </div>
 
-            <div className="glass-card rounded-[2rem] lg:rounded-[2.5rem] p-6 lg:p-8 border-white/5 flex items-center gap-6">
+            <div className="glass-card rounded-[2.5rem] p-6 lg:p-8 border-white/5 flex items-center gap-6">
                <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500">
                   <Star size={24} />
                </div>

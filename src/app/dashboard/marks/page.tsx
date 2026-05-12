@@ -46,7 +46,7 @@ export default function MarksPage() {
     const requiredFromEndSem75 = (requiredFromEndSem40 / 40) * 75;
 
     return (
-      <div className="mt-8 p-6 lg:p-8 rounded-[2rem] bg-primary/[0.03] border border-primary/10 relative overflow-hidden group/projector">
+      <div className="mt-8 p-6 lg:p-8 rounded-[2.5rem] bg-primary/[0.03] border border-primary/10 relative overflow-hidden group/projector">
         <div className="absolute top-0 right-0 p-6 text-primary/5 opacity-20 group-hover/projector:opacity-40 transition-opacity">
            <Zap size={80} />
         </div>
@@ -100,14 +100,14 @@ export default function MarksPage() {
       </div>
       <div className="space-y-8">
         {marks.map((course: any, i: number) => (
-          <div key={i} className="glass-card rounded-[2rem] lg:rounded-[3rem] p-6 lg:p-12 border-white/5 hover:border-primary/20 transition-all relative overflow-hidden group">
+          <div key={i} className="glass-card rounded-[2.5rem] p-6 lg:p-12 border-white/5 hover:border-primary/20 transition-all relative overflow-hidden group">
              <div className="absolute top-0 right-0 p-12 text-primary/5 group-hover:text-primary/10 transition-all">
                 <Zap size={160} strokeWidth={3} />
              </div>
 
              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-10 mb-8 lg:mb-12 relative z-10">
                 <div className="flex items-start gap-4 lg:gap-8 flex-1">
-                   <div className="w-14 h-14 lg:w-20 lg:h-20 bg-primary rounded-2xl lg:rounded-[2rem] flex items-center justify-center text-white shadow-2xl shadow-primary/20 flex-shrink-0">
+                   <div className="w-14 h-14 lg:w-20 lg:h-20 bg-primary rounded-2xl lg:rounded-3xl flex items-center justify-center text-white shadow-2xl shadow-primary/20 flex-shrink-0">
                       <BookOpen className="w-7 h-7 lg:w-9 lg:h-9" />
                    </div>
                    <div>
@@ -125,7 +125,7 @@ export default function MarksPage() {
                    </div>
                 </div>
                 
-                <div className="p-6 lg:p-8 rounded-2xl lg:rounded-[2.5rem] bg-white/[0.03] border border-white/5 min-w-full lg:min-w-[240px] text-center flex flex-col items-center justify-center relative overflow-hidden group/score">
+                <div className="p-6 lg:p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/5 min-w-full lg:min-w-[240px] text-center flex flex-col items-center justify-center relative overflow-hidden group/score">
                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover/score:opacity-100 transition-opacity" />
                    <p className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-3 relative z-10">Total Obtained</p>
                    <div className="flex items-baseline gap-2 relative z-10">
@@ -137,7 +137,7 @@ export default function MarksPage() {
 
              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 relative z-10">
                 {course.scores.map((score: any, si: number) => (
-                   <div key={si} className="p-4 lg:p-6 rounded-2xl lg:rounded-[2rem] bg-white/[0.03] border border-white/5 group/test hover:border-primary/20 transition-all text-center">
+                   <div key={si} className="p-4 lg:p-6 rounded-2xl bg-white/[0.03] border border-white/5 group/test hover:border-primary/20 transition-all text-center">
                       <p className="text-[8px] lg:text-[9px] font-black text-muted-foreground uppercase tracking-widest mb-1 lg:mb-2 group-hover/test:text-primary transition-colors">
                          {score.label.split('/')[0]}
                       </p>
@@ -174,7 +174,7 @@ export default function MarksPage() {
       {practical.length > 0 && <Section title="Practical & Lab" marks={practical} icon={Beaker} isTheory={false} />}
 
       {(!data?.marks || data.marks.length === 0) && (
-        <div className="p-20 flex flex-col items-center justify-center glass-card rounded-[3rem] border-dashed border-white/10 opacity-30">
+        <div className="p-20 flex flex-col items-center justify-center glass-card rounded-[2.5rem] border-dashed border-white/10 opacity-30">
            <p className="text-muted-foreground font-bold text-xl uppercase tracking-widest">No evaluation data found</p>
         </div>
       )}

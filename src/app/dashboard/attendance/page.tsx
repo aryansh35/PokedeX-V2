@@ -44,7 +44,7 @@ export default function AttendancePage() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {courses.map((course: any, i: number) => (
-          <div key={i} className="glass-card rounded-[2rem] lg:rounded-[3rem] p-6 lg:p-10 border-white/5 hover:bg-white/[0.02] transition-all relative overflow-hidden group">
+          <div key={i} className="glass-card rounded-[2.5rem] p-6 lg:p-10 border-white/5 hover:bg-white/[0.02] transition-all relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-10 text-primary/5 group-hover:text-primary/10 transition-all">
                <Zap size={120} strokeWidth={3} />
             </div>
@@ -54,21 +54,21 @@ export default function AttendancePage() {
                 <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">{course.courseCode}</p>
                 <h3 className="text-2xl font-black leading-tight group-hover:text-primary transition-colors italic tracking-tighter uppercase">{course.courseTitle}</h3>
               </div>
-              <div className={`p-3 lg:p-4 rounded-xl lg:rounded-2xl ${course.status === 'safe' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'} border border-current/20`}>
+              <div className={`p-3 lg:p-4 rounded-2xl ${course.status === 'safe' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'} border border-current/20`}>
                 {course.status === 'safe' ? <CheckCircle2 className="w-5 h-5 lg:w-6 lg:h-6" /> : <AlertCircle className="w-5 h-5 lg:w-6 lg:h-6" />}
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-3 lg:gap-6 relative z-10">
-              <div className="p-3 lg:p-4 rounded-xl lg:rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-3 lg:p-4 rounded-2xl bg-white/5 border border-white/5">
                 <p className="text-[8px] lg:text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Percentage</p>
                 <p className="text-lg lg:text-2xl font-black tabular-nums">{course.attendance}%</p>
               </div>
-              <div className="p-3 lg:p-4 rounded-xl lg:rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-3 lg:p-4 rounded-2xl bg-white/5 border border-white/5">
                 <p className="text-[8px] lg:text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Conducted</p>
                 <p className="text-lg lg:text-2xl font-black tabular-nums">{course.conducted}</p>
               </div>
-              <div className="p-3 lg:p-4 rounded-xl lg:rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-3 lg:p-4 rounded-2xl bg-white/5 border border-white/5">
                 <p className="text-[8px] lg:text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">
                   {course.status === 'safe' ? 'Margin' : 'Needed'}
                 </p>
@@ -103,7 +103,7 @@ export default function AttendancePage() {
       {practical.length > 0 && <Section title="Practical & Lab" courses={practical} icon={Beaker} />}
 
       {(!data?.attendance || data.attendance.length === 0) && (
-        <div className="p-20 flex flex-col items-center justify-center glass-card rounded-[3rem] border-dashed border-white/10 opacity-30">
+        <div className="p-20 flex flex-col items-center justify-center glass-card rounded-[2.5rem] border-dashed border-white/10 opacity-30">
            <p className="text-muted-foreground font-bold text-xl uppercase tracking-widest">No attendance data found</p>
         </div>
       )}
