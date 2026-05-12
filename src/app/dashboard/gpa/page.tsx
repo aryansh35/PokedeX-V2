@@ -145,7 +145,7 @@ export default function GPAPage() {
    };
 
    return (
-      <div 
+      <div
          className="pb-32 animate-in fade-in slide-in-from-bottom-4 duration-700 overflow-x-hidden"
          onTouchStart={handleTouchStart}
          onTouchMove={handleTouchMove}
@@ -245,7 +245,7 @@ export default function GPAPage() {
                         <div className="glass-card rounded-[2.5rem] p-8 lg:p-10 border-white/5 flex flex-col justify-between group shadow-2xl">
                            <div className="space-y-6">
                               <div className="flex items-center justify-between">
-                                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Intelligence Depth</p>
+                                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Total Credits this Sem</p>
                                  <GraduationCap className="text-primary/40 group-hover:text-primary transition-colors" size={20} />
                               </div>
                               <div className="space-y-4">
@@ -253,152 +253,137 @@ export default function GPAPage() {
                                     <h3 className="text-4xl font-black italic">{calculator.totalCredits}</h3>
                                     <p className="text-[10px] font-bold text-white/40 uppercase mb-1">Credits Analyzed</p>
                                  </div>
-                                 <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                                    <div
-                                       className="h-full bg-gradient-to-r from-primary to-purple-600 transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]"
-                                       style={{ width: `${(calculator.totalCredits / 25) * 100}%` }}
-                                    />
-                                 </div>
                               </div>
                            </div>
+                        </div>
+                     </div>
 
-                           <div className="pt-8 border-t border-white/5 space-y-4">
-                              <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Performance Status</p>
-                              <div className="flex flex-wrap gap-2">
-                                 {['Verified', 'Secure', 'Optimal'].map(tag => (
-                                    <span key={tag} className="px-3 py-1 bg-white/5 rounded-full text-[9px] font-bold uppercase tracking-widest text-white/40 border border-white/5">{tag}</span>
-                                 ))}
-                               </div>
-                            </div>
-                         </div>
-                      </div>
+                     {/* Course Grid */}
+                     <div className="space-y-6">
+                        <div className="flex items-center justify-between px-4">
+                           <div className="flex items-center gap-3">
+                              <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                              <h3 className="text-xs font-black uppercase tracking-[0.4em] text-white/40">Academic Matrix</h3>
+                           </div>
+                           <p className="text-[10px] font-bold text-primary italic uppercase tracking-widest">
+                              {mode === 'manual' ? 'Edit Mode Active' : 'Read-Only Mode'}
+                           </p>
+                        </div>
 
-                      {/* Course Grid */}
-                      <div className="space-y-6">
-                         <div className="flex items-center justify-between px-4">
-                            <div className="flex items-center gap-3">
-                               <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
-                               <h3 className="text-xs font-black uppercase tracking-[0.4em] text-white/40">Academic Matrix</h3>
-                            </div>
-                            <p className="text-[10px] font-bold text-primary italic uppercase tracking-widest">
-                               {mode === 'manual' ? 'Edit Mode Active' : 'Read-Only Mode'}
-                            </p>
-                         </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                           {calculator.courseStats.map((course: any, i: number) => (
+                              <div key={i} className={`glass-card rounded-[2.5rem] p-8 border border-white/5 hover:border-primary/20 transition-all duration-500 group relative overflow-hidden ${mode === 'manual' ? 'cursor-pointer hover:bg-primary/[0.02]' : ''}`}>
+                                 <div className="relative z-10 flex flex-col h-full justify-between gap-8">
+                                    <div className="flex items-start justify-between">
+                                       <div className="space-y-1">
+                                          <p className="text-[10px] font-black text-primary/60 uppercase tracking-widest">{course.courseCode}</p>
+                                          <h4 className="text-sm font-bold text-white group-hover:text-primary transition-colors line-clamp-2 uppercase italic tracking-tight">
+                                             {course.courseTitle}
+                                          </h4>
+                                       </div>
+                                       <button
+                                          onClick={() => mode === "manual" && toggleManualGrade(course.courseCode)}
+                                          className={`w-16 h-16 shrink-0 bg-white/[0.02] border flex items-center justify-center rounded-2xl text-2xl font-black italic transition-all group-hover:scale-110 shadow-2xl ${mode === "manual"
+                                             ? "cursor-pointer border-primary ring-2 ring-primary/20 ring-offset-4 ring-offset-[#0a0a0b] text-primary bg-primary/5 animate-pulse"
+                                             : "cursor-default border-white/5 text-white group-hover:text-primary"
+                                             }`}
+                                       >
+                                          {course.grade}
+                                       </button>
+                                    </div>
 
-                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {calculator.courseStats.map((course: any, i: number) => (
-                               <div key={i} className={`glass-card rounded-[2.5rem] p-8 border border-white/5 hover:border-primary/20 transition-all duration-500 group relative overflow-hidden ${mode === 'manual' ? 'cursor-pointer hover:bg-primary/[0.02]' : ''}`}>
-                                  <div className="relative z-10 flex flex-col h-full justify-between gap-8">
-                                     <div className="flex items-start justify-between">
-                                        <div className="space-y-1">
-                                           <p className="text-[10px] font-black text-primary/60 uppercase tracking-widest">{course.courseCode}</p>
-                                           <h4 className="text-sm font-bold text-white group-hover:text-primary transition-colors line-clamp-2 uppercase italic tracking-tight">
-                                              {course.courseTitle}
-                                           </h4>
-                                        </div>
-                                        <button
-                                           onClick={() => mode === "manual" && toggleManualGrade(course.courseCode)}
-                                           className={`w-16 h-16 shrink-0 bg-white/[0.02] border flex items-center justify-center rounded-2xl text-2xl font-black italic transition-all group-hover:scale-110 shadow-2xl ${mode === "manual"
-                                              ? "cursor-pointer border-primary ring-2 ring-primary/20 ring-offset-4 ring-offset-[#0a0a0b] text-primary bg-primary/5 animate-pulse"
-                                              : "cursor-default border-white/5 text-white group-hover:text-primary"
-                                              }`}
-                                         >
-                                            {course.grade}
-                                         </button>
-                                      </div>
+                                    <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                                       <div>
+                                          <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1">Credits</p>
+                                          <p className="text-lg font-black italic text-white/80">{course.credits} <span className="text-[10px] opacity-40">credits</span></p>
+                                       </div>
+                                       <div className="text-right">
+                                          <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1">Points</p>
+                                          <p className="text-lg font-black italic text-white/80">{course.points}</p>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           ))}
+                        </div>
+                     </div>
+                  </>
+               ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
+                     <div className="lg:col-span-3 space-y-6">
+                        <div className="flex items-center justify-between px-4 mb-4">
+                           <p className="text-[10px] font-black uppercase tracking-widest text-white/20">Input Matrix</p>
+                           <button
+                              onClick={() => setSemesters([...semesters, { id: Date.now(), sgpa: "", credits: "" }])}
+                              className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-xl text-[10px] font-black uppercase text-primary hover:bg-primary hover:text-white transition-all shadow-lg shadow-primary/10"
+                           >
+                              <Plus size={12} />
+                              Add Semester
+                           </button>
+                        </div>
 
-                                      <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
-                                         <div>
-                                            <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1">Credits</p>
-                                            <p className="text-lg font-black italic text-white/80">{course.credits} <span className="text-[10px] opacity-40">credits</span></p>
-                                         </div>
-                                         <div className="text-right">
-                                            <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1">Points</p>
-                                            <p className="text-lg font-black italic text-white/80">{course.points}</p>
-                                         </div>
-                                      </div>
-                                   </div>
-                                </div>
-                             ))}
-                          </div>
-                       </div>
-                    </>
-                 ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-                       <div className="lg:col-span-3 space-y-6">
-                          <div className="flex items-center justify-between px-4 mb-4">
-                             <p className="text-[10px] font-black uppercase tracking-widest text-white/20">Input Matrix</p>
-                             <button
-                                onClick={() => setSemesters([...semesters, { id: Date.now(), sgpa: "", credits: "" }])}
-                                className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-xl text-[10px] font-black uppercase text-primary hover:bg-primary hover:text-white transition-all shadow-lg shadow-primary/10"
-                             >
-                                <Plus size={12} />
-                                Add Semester
-                             </button>
-                          </div>
+                        <div className="space-y-4">
+                           {semesters.map((sem) => (
+                              <div key={sem.id} className="glass-card rounded-3xl p-6 lg:p-8 border-white/5 flex flex-col md:flex-row items-center gap-8 animate-in slide-in-from-left-4 duration-500">
+                                 <div className="flex-1 grid grid-cols-2 gap-6 w-full">
+                                    <div className="space-y-2">
+                                       <label className="text-[9px] font-black text-white/20 uppercase tracking-widest block ml-1">SGPA Score</label>
+                                       <input
+                                          type="number" step="0.01" placeholder="0.00" value={sem.sgpa}
+                                          onChange={(e) => setSemesters(semesters.map(s => s.id === sem.id ? { ...s, sgpa: e.target.value } : s))}
+                                          className="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 text-xl font-black italic text-white placeholder:text-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 outline-none transition-all"
+                                       />
+                                    </div>
+                                    <div className="space-y-2">
+                                       <label className="text-[9px] font-black text-white/20 uppercase tracking-widest block ml-1">Credits</label>
+                                       <input
+                                          type="number" placeholder="00" value={sem.credits}
+                                          onChange={(e) => setSemesters(semesters.map(s => s.id === sem.id ? { ...s, credits: e.target.value } : s))}
+                                          className="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 text-xl font-black italic text-white placeholder:text-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 outline-none transition-all"
+                                       />
+                                    </div>
+                                 </div>
+                                 <button
+                                    onClick={() => semesters.length > 1 && setSemesters(semesters.filter(s => s.id !== sem.id))}
+                                    className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shrink-0 border border-rose-500/20"
+                                 >
+                                    <Trash2 size={18} />
+                                 </button>
+                              </div>
+                           ))}
+                        </div>
+                     </div>
 
-                          <div className="space-y-4">
-                             {semesters.map((sem) => (
-                                <div key={sem.id} className="glass-card rounded-3xl p-6 lg:p-8 border-white/5 flex flex-col md:flex-row items-center gap-8 animate-in slide-in-from-left-4 duration-500">
-                                   <div className="flex-1 grid grid-cols-2 gap-6 w-full">
-                                      <div className="space-y-2">
-                                         <label className="text-[9px] font-black text-white/20 uppercase tracking-widest block ml-1">SGPA Score</label>
-                                         <input
-                                            type="number" step="0.01" placeholder="0.00" value={sem.sgpa}
-                                            onChange={(e) => setSemesters(semesters.map(s => s.id === sem.id ? { ...s, sgpa: e.target.value } : s))}
-                                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 text-xl font-black italic text-white placeholder:text-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 outline-none transition-all"
-                                         />
-                                      </div>
-                                      <div className="space-y-2">
-                                         <label className="text-[9px] font-black text-white/20 uppercase tracking-widest block ml-1">Credits</label>
-                                         <input
-                                            type="number" placeholder="00" value={sem.credits}
-                                            onChange={(e) => setSemesters(semesters.map(s => s.id === sem.id ? { ...s, credits: e.target.value } : s))}
-                                            className="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 text-xl font-black italic text-white placeholder:text-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 outline-none transition-all"
-                                         />
-                                      </div>
-                                   </div>
-                                   <button
-                                      onClick={() => semesters.length > 1 && setSemesters(semesters.filter(s => s.id !== sem.id))}
-                                      className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shrink-0 border border-rose-500/20"
-                                   >
-                                      <Trash2 size={18} />
-                                   </button>
-                                </div>
-                             ))}
-                          </div>
-                       </div>
-
-                       <div className="lg:col-span-2 space-y-8">
-                          <div className="glass-card rounded-[3rem] p-8 lg:p-12 border-primary/20 bg-primary/5 shadow-2xl shadow-primary/10 relative overflow-visible text-center group sticky top-8">
-                             <div className="absolute top-0 right-0 p-10 text-primary/10 group-hover:scale-110 transition-transform pointer-events-none">
-                                <TrendingUp size={120} />
-                             </div>
-                             <div className="relative z-10">
-                                <p className="text-[12px] font-black uppercase tracking-[0.5em] text-primary mb-8">Cumulative Grade</p>
-                                <div className="relative inline-block mb-10 w-full">
-                                   <h2 className="text-5xl lg:text-[9rem] font-black tracking-tighter italic leading-none text-white drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] break-words">
-                                      {cgpaResults.cgpa}
-                                   </h2>
-                                </div>
-                                <div className="grid grid-cols-1 gap-4 pt-8 border-t border-white/5">
-                                   <div className="p-5 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
-                                      <p className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">Lifetime Credits Accumulated</p>
-                                      <p className="text-3xl font-black italic text-white">{cgpaResults.totalCredits}</p>
-                                   </div>
-                                </div>
-                                <div className="mt-8 p-6 rounded-3xl bg-primary/10 border border-primary/20">
-                                   <p className="text-[9px] font-black text-primary/60 uppercase tracking-widest mb-2">Academic Standing</p>
-                                   <p className="text-sm font-bold uppercase italic text-white">
-                                      {cgpaResults.cgpaNum >= 9 ? 'Elite Distinction Tier' : cgpaResults.cgpaNum >= 8 ? 'High Honors Protocol' : 'Optimization Mode Active'}
-                                   </p>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                 )}
-              </div>
+                     <div className="lg:col-span-2 space-y-8">
+                        <div className="glass-card rounded-[3rem] p-8 lg:p-12 border-primary/20 bg-primary/5 shadow-2xl shadow-primary/10 relative overflow-visible text-center group sticky top-8">
+                           <div className="absolute top-0 right-0 p-10 text-primary/10 group-hover:scale-110 transition-transform pointer-events-none">
+                              <TrendingUp size={120} />
+                           </div>
+                           <div className="relative z-10">
+                              <p className="text-[12px] font-black uppercase tracking-[0.5em] text-primary mb-8">Cumulative Grade</p>
+                              <div className="relative inline-block mb-10 w-full">
+                                 <h2 className="text-5xl lg:text-[9rem] font-black tracking-tighter italic leading-none text-white drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] break-words">
+                                    {cgpaResults.cgpa}
+                                 </h2>
+                              </div>
+                              <div className="grid grid-cols-1 gap-4 pt-8 border-t border-white/5">
+                                 <div className="p-5 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-sm">
+                                    <p className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">Lifetime Credits Accumulated</p>
+                                    <p className="text-3xl font-black italic text-white">{cgpaResults.totalCredits}</p>
+                                 </div>
+                              </div>
+                              <div className="mt-8 p-6 rounded-3xl bg-primary/10 border border-primary/20">
+                                 <p className="text-[9px] font-black text-primary/60 uppercase tracking-widest mb-2">Academic Standing</p>
+                                 <p className="text-sm font-bold uppercase italic text-white">
+                                    {cgpaResults.cgpaNum >= 9 ? 'Elite Distinction Tier' : cgpaResults.cgpaNum >= 8 ? 'High Honors Protocol' : 'Optimization Mode Active'}
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               )}
+            </div>
          </div>
       </div>
    );
