@@ -2,17 +2,24 @@
 
 import { useDashboard } from "@/context/DashboardContext";
 import { RefreshCw, Calculator, TrendingUp, Star, Award, BookOpen, Target, Plus, Trash2, GraduationCap } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function GPAPage() {
    const { data, loading } = useDashboard();
    const [targetGPA, setTargetGPA] = useState("9.0");
    const [mode, setMode] = useState<"auto" | "manual" | "cgpa">("auto");
+   const [direction, setDirection] = useState<"left" | "right">("right");
    const [manualGrades, setManualGrades] = useState<Record<string, { grade: string; points: number }>>({});
    const [semesters, setSemesters] = useState<any[]>([{ id: 1, sgpa: "", credits: "" }]);
 
-   if (loading) return (
+   const [mounted, setMounted] = useState(false);
+
+   useEffect(() => {
+      setMounted(true);
+   }, []);
+
+   if (!mounted || loading) return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b]">
          <RefreshCw className="w-8 h-8 text-primary animate-spin" />
       </div>
@@ -114,6 +121,16 @@ export default function GPAPage() {
       setTouchEnd({ x: e.targetTouches[0].clientX, y: e.targetTouches[0].clientY });
    };
 
+   const handleModeChange = (newMode: "auto" | "manual" | "cgpa") => {
+      const modes: ("auto" | "manual" | "cgpa")[] = ["auto", "manual", "cgpa"];
+      const newIndex = modes.indexOf(newMode);
+      const currentIndex = modes.indexOf(mode);
+      if (newIndex !== currentIndex) {
+         setDirection(newIndex > currentIndex ? "right" : "left");
+         setMode(newMode);
+      }
+   };
+
    const handleTouchEnd = () => {
       const dx = touchStart.x - touchEnd.x;
       const dy = touchStart.y - touchEnd.y;
@@ -122,8 +139,14 @@ export default function GPAPage() {
       if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 70) {
          const modes: ("auto" | "manual" | "cgpa")[] = ["auto", "manual", "cgpa"];
          const currentIndex = modes.indexOf(mode);
-         if (dx > 0 && currentIndex < modes.length - 1) setMode(modes[currentIndex + 1]);
-         if (dx < 0 && currentIndex > 0) setMode(modes[currentIndex - 1]);
+         if (dx > 0 && currentIndex < modes.length - 1) {
+            setDirection("right");
+            setMode(modes[currentIndex + 1]);
+         }
+         if (dx < 0 && currentIndex > 0) {
+            setDirection("left");
+            setMode(modes[currentIndex - 1]);
+         }
       }
    };
 
@@ -151,19 +174,19 @@ export default function GPAPage() {
                   {/* Unified Master Switcher */}
                   <div className="grid grid-cols-3 p-1.5 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-xl w-full md:w-[450px]">
                      <button
-                        onClick={() => setMode("auto")}
+                        onClick={() => handleModeChange("auto")}
                         className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "auto" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                      >
                         Predicted
                      </button>
                      <button
-                        onClick={() => setMode("manual")}
+                        onClick={() => handleModeChange("manual")}
                         className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "manual" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                      >
                         Simulation
                      </button>
                      <button
-                        onClick={() => setMode("cgpa")}
+                        onClick={() => handleModeChange("cgpa")}
                         className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "cgpa" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                      >
                         CGPA
@@ -179,7 +202,7 @@ export default function GPAPage() {
                </div>
             </div>
 
-            <div key={mode} className="animate-in fade-in slide-in-from-right-4 duration-500 space-y-6 lg:space-y-12">
+            <div key={mode} className={`animate-in fade-in duration-700 space-y-6 lg:space-y-12 ${direction === 'right' ? 'slide-in-from-right-20' : 'slide-in-from-left-20'}`}>
                {mode !== "cgpa" ? (
                   <>
                      {/* GPA Hero Card */}
