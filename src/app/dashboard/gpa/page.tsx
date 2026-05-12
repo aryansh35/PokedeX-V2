@@ -44,7 +44,7 @@ export default function GPAPage() {
    const calculator = (() => {
       let totalGradePoints = 0;
       let totalCredits = 0;
-      
+
       const courseStats = marks.map((m: any) => {
          const credits = parseInt(m.credits) || 0;
          let grade = "";
@@ -117,24 +117,24 @@ export default function GPAPage() {
                   </h1>
                   <p className="text-[10px] lg:text-lg font-medium italic uppercase tracking-widest opacity-60 text-muted-foreground">High-Precision Academic Performance Analytics</p>
                </div>
-               
+
                {/* Unified Master Switcher */}
-               <div className="grid grid-cols-3 p-1 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-xl w-full md:w-[450px]">
-                  <button 
+               <div className="grid grid-cols-3 p-1.5 bg-white/5 rounded-2xl border border-white/5 backdrop-blur-xl w-full md:w-[450px]">
+                  <button
                      onClick={() => setMode("auto")}
-                     className={`px-1 py-3 rounded-xl text-[8px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "auto" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "auto" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                   >
                      Auto Sync
                   </button>
-                  <button 
+                  <button
                      onClick={() => setMode("manual")}
-                     className={`px-1 py-3 rounded-xl text-[8px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "manual" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "manual" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                   >
                      Simulation
                   </button>
-                  <button 
+                  <button
                      onClick={() => setMode("cgpa")}
-                     className={`px-1 py-3 rounded-xl text-[8px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "cgpa" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
+                     className={`px-4 py-4 rounded-xl text-[10px] lg:text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap active:scale-95 ${mode === "cgpa" ? "bg-primary text-white shadow-lg" : "text-white/40 hover:text-white"}`}
                   >
                      CGPA Cal
                   </button>
@@ -274,13 +274,12 @@ export default function GPAPage() {
                                           {course.courseTitle}
                                        </h4>
                                     </div>
-                                    <button 
+                                    <button
                                        onClick={() => mode === "manual" && toggleManualGrade(course.courseCode)}
-                                       className={`w-16 h-16 shrink-0 bg-white/[0.02] border flex items-center justify-center rounded-2xl text-2xl font-black italic transition-all group-hover:scale-110 shadow-2xl ${
-                                          mode === "manual" 
-                                          ? "cursor-pointer border-primary ring-2 ring-primary/20 ring-offset-4 ring-offset-[#0a0a0b] text-primary bg-primary/5 animate-pulse" 
-                                          : "cursor-default border-white/5 text-white group-hover:text-primary"
-                                       }`}
+                                       className={`w-16 h-16 shrink-0 bg-white/[0.02] border flex items-center justify-center rounded-2xl text-2xl font-black italic transition-all group-hover:scale-110 shadow-2xl ${mode === "manual"
+                                             ? "cursor-pointer border-primary ring-2 ring-primary/20 ring-offset-4 ring-offset-[#0a0a0b] text-primary bg-primary/5 animate-pulse"
+                                             : "cursor-default border-white/5 text-white group-hover:text-primary"
+                                          }`}
                                     >
                                        {course.grade}
                                     </button>
@@ -308,7 +307,7 @@ export default function GPAPage() {
                                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
                                     <div>
                                        <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1">Credits</p>
-                                       <p className="text-lg font-black italic text-white/80">{course.credits} <span className="text-[10px] opacity-40">Unit</span></p>
+                                       <p className="text-lg font-black italic text-white/80">{course.credits} <span className="text-[10px] opacity-40">credits</span></p>
                                     </div>
                                     <div className="text-right">
                                        <p className="text-[9px] font-black text-white/20 uppercase tracking-widest mb-1">Points</p>
@@ -326,7 +325,7 @@ export default function GPAPage() {
                   <div className="lg:col-span-3 space-y-6">
                      <div className="flex items-center justify-between px-4 mb-4">
                         <p className="text-[10px] font-black uppercase tracking-widest text-white/20">Input Matrix</p>
-                        <button 
+                        <button
                            onClick={() => setSemesters([...semesters, { id: Date.now(), sgpa: "", credits: "" }])}
                            className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-xl text-[10px] font-black uppercase text-primary hover:bg-primary hover:text-white transition-all shadow-lg shadow-primary/10"
                         >
@@ -343,7 +342,7 @@ export default function GPAPage() {
                               <div className="flex-1 grid grid-cols-2 gap-6 w-full">
                                  <div className="space-y-2">
                                     <label className="text-[9px] font-black text-white/20 uppercase tracking-widest block ml-1">SGPA Score</label>
-                                    <input 
+                                    <input
                                        type="number" step="0.01" placeholder="0.00" value={sem.sgpa}
                                        onChange={(e) => setSemesters(semesters.map(s => s.id === sem.id ? { ...s, sgpa: e.target.value } : s))}
                                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 text-xl font-black italic text-white placeholder:text-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 outline-none transition-all"
@@ -351,14 +350,14 @@ export default function GPAPage() {
                                  </div>
                                  <div className="space-y-2">
                                     <label className="text-[9px] font-black text-white/20 uppercase tracking-widest block ml-1">Credits</label>
-                                    <input 
+                                    <input
                                        type="number" placeholder="00" value={sem.credits}
                                        onChange={(e) => setSemesters(semesters.map(s => s.id === sem.id ? { ...s, credits: e.target.value } : s))}
                                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl p-4 text-xl font-black italic text-white placeholder:text-white/5 focus:border-primary/50 focus:ring-4 focus:ring-primary/10 outline-none transition-all"
                                     />
                                  </div>
                               </div>
-                              <button 
+                              <button
                                  onClick={() => semesters.length > 1 && setSemesters(semesters.filter(s => s.id !== sem.id))}
                                  className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-all shrink-0 border border-rose-500/20"
                               >

@@ -12,10 +12,10 @@ import { useState } from "react";
 import { DashboardProvider, useDashboard } from "@/context/DashboardContext";
 
 const Pokeball = ({ className }: { className?: string }) => (
-  <svg 
-    viewBox="0 0 100 100" 
-    fill="none" 
-    xmlns="http://www.w3.org/2000/svg" 
+  <svg
+    viewBox="0 0 100 100"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
     className={className}
   >
     {/* Background Circle */}
@@ -49,9 +49,9 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
     { label: "Attendance", href: "/dashboard/attendance", icon: CheckCircle },
     { label: "Internal Marks", href: "/dashboard/marks", icon: BookOpen },
-    { label: "GPA Calculator", href: "/dashboard/gpa", icon: Calculator },
     { label: "Timetable", href: "/dashboard/timetable", icon: Clock },
     { label: "Courses", href: "/dashboard/courses", icon: Users },
+    { label: "GPA Calculator", href: "/dashboard/gpa", icon: Calculator },
     { label: "Academic Planner", href: "/dashboard/calendar", icon: Calendar },
     { label: "Profile", href: "/dashboard/profile", icon: User },
   ];
@@ -140,10 +140,10 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
         </nav>
 
         <div className="p-6 border-t border-white/5">
-          <button 
+          <button
             onClick={async () => {
               const { logoutAction } = await import("@/server/actions");
-              
+
               // 1. Wipe all client-side storage
               localStorage.clear();
               if ('caches' in window) {
@@ -151,7 +151,7 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
                 await Promise.all(cacheNames.map(name => caches.delete(name)));
               }
               sessionStorage.clear();
-              
+
               // 2. Perform server-side logout (clears cookies and redirects)
               await logoutAction();
             }}

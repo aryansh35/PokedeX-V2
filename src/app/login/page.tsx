@@ -78,11 +78,11 @@ export default function LoginPage() {
         if (res.isAuthenticated && typeof res.data?.cookies === "string") {
           Cookies.set("token", res.data.cookies, { path: "/", expires: 30 });
           Cookies.set("user", email.mail, { path: "/", expires: 30 });
-          
+
           // Trigger Authorization Sequence
           setIsAuthorized(true);
           setLoading(false);
-          
+
           setTimeout(() => {
             window.location.href = "/dashboard";
           }, 1500); // Wait for spin animation
@@ -248,7 +248,7 @@ export default function LoginPage() {
                 ) : (
                   <>
                     <LogIn className="w-5 h-5" />
-                    <span className="text-sm">{step === 1 ? "Initialize Uplink" : "Authorize Link"}</span>
+                    <span className="text-sm">{step === 1 ? "Initialize" : "Authenticate"}</span>
                   </>
                 )}
               </button>
@@ -259,7 +259,7 @@ export default function LoginPage() {
         <div className="flex flex-col items-center gap-4">
           <div className="h-[1px] w-12 bg-white/10" />
           <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/10">
-            Security Protocol: ONYX_STRIKE v2.0
+            Secured Protocol
           </p>
         </div>
       </div>
