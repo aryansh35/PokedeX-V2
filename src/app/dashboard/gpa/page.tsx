@@ -53,12 +53,20 @@ export default function GPAPage() {
          let percentage = 0;
 
          if (mode === "auto") {
-            percentage = (parseFloat(m.totalObtained) / parseFloat(m.totalMax)) * 100;
+            const obtained = parseFloat(m.totalObtained) || 0;
+            const max = parseFloat(m.totalMax) || 0;
+            percentage = max > 0 ? (obtained / max) * 100 : 0;
             const res = getGradePoints(percentage);
             grade = res.grade;
             points = res.points;
          } else {
-            const manual = manualGrades[m.courseCode] || { grade: "O", points: 10 };
+            // Simulation Baseline Fix: Use Predicted Grade as initial fallback instead of hardcoded 'O'
+            const obtained = parseFloat(m.totalObtained) || 0;
+            const max = parseFloat(m.totalMax) || 0;
+            const predPercentage = max > 0 ? (obtained / max) * 100 : 0;
+            const predRes = getGradePoints(predPercentage);
+            
+            const manual = manualGrades[m.courseCode] || { grade: predRes.grade, points: predRes.points };
             grade = manual.grade;
             points = manual.points;
          }
@@ -97,8 +105,11 @@ export default function GPAPage() {
 
    const toggleManualGrade = (courseCode: string) => {
       setManualGrades(prev => {
-         const current = prev[courseCode] || { grade: "O", points: 10 };
-         const currentIndex = grades.findIndex(g => g.label === current.grade);
+         // Get current state or predicted fallback
+         const course = calculator.courseStats.find((c: any) => c.courseCode === courseCode);
+         const currentGrade = prev[courseCode]?.grade || course?.grade || "O";
+         
+         const currentIndex = grades.findIndex(g => g.label === currentGrade);
          const nextIndex = (currentIndex + 1) % grades.length;
          return { ...prev, [courseCode]: { grade: grades[nextIndex].label, points: grades[nextIndex].points } };
       });

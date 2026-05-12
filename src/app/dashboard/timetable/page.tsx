@@ -36,7 +36,7 @@ export default function TimetablePage() {
    const { data, loading, dayOrder: todayDayOrder, lastSynced, refreshData } = useDashboard();
    const [activeBatch, setActiveBatch] = useState(1);
    const [activeDay, setActiveDay] = useState(1);
-   const [currentTime, setCurrentTime] = useState(new Date());
+   const [currentTime, setCurrentTime] = useState<Date | null>(null);
    const tableRef = useRef<HTMLDivElement>(null);
 
    const getSyncStatus = () => {
@@ -165,7 +165,7 @@ export default function TimetablePage() {
                      <div className="flex items-center gap-2 text-white/80">
                         <Clock size={16} className="text-primary animate-pulse" />
                         <span className="tabular-nums uppercase text-[10px] lg:text-xs tracking-widest">
-                           {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+                           {currentTime ? currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : "--:-- --"}
                         </span>
                      </div>
                   </div>

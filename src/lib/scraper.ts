@@ -50,21 +50,31 @@ async function fetchSanitized(url: string, cookies: string) {
   try {
     const res = await fetch(url, { headers: { "Cookie": cookies, "User-Agent": "Mozilla/5.0" }, redirect: "follow" });
     
-    // If we're redirected to the sign-in page, the session is dead
     if (res.url.includes("signin") || res.url.includes("accounts.srmist.edu.in")) {
       return "AUTH_ERROR";
     }
 
     const raw = await res.text();
-    const match = raw.match(/\.sanitize\(\s*(['"])((?:(?!\1)[\s\S]|\\\1)*)\1\s*\)/);
-    if (!match) return "";
-    return match[2].replace(/\\x([0-9A-Fa-f]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16))).replace(/\\(.)/g, "$1");
+    
+    // Performance Optimization: Use String Slicing instead of Regex for large HTML strings
+    const startMarker = ".sanitize(";
+    const startIndex = raw.indexOf(startMarker);
+    if (startIndex === -1) return "";
+
+    const quoteChar = raw[startIndex + startMarker.length];
+    const contentStart = startIndex + startMarker.length + 1;
+    const contentEnd = raw.indexOf(quoteChar + ")", contentStart);
+    
+    if (contentEnd === -1) return "";
+    
+    const content = raw.substring(contentStart, contentEnd);
+    return content.replace(/\\x([0-9A-Fa-f]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16))).replace(/\\(.)/g, "$1");
   } catch { return ""; }
 }
 
-export async function scrapeEverything(cookies: string, loginEmail?: string, targets: string[] = ["attendance", "marks", "courses", "profile"]) {
+export async function scrapeEverything(cookies: string, loginEmail?: string, targets: string[] = ["attendance", "marks", "courses", "profile"], cachedTtUrl?: string) {
   console.log(`🚀 [POKÉDEX] INITIALIZING TARGETED EXTRACTION: [${targets.join(", ")}]`);
-  const data: any = { attendance: [], marks: [], courses: [], profile: { advisors: [] } };
+  const data: any = { attendance: [], marks: [], courses: [], profile: { advisors: [] }, activeTtUrl: "" };
   
   const shouldFetch = (t: string) => targets.includes(t);
 
@@ -86,22 +96,27 @@ export async function scrapeEverything(cookies: string, loginEmail?: string, tar
      }
   }
 
-  // Try multiple timetable URLs to find the active one
+  // Path Persistence Fix: Try the cached URL first to save CPU
   let ttHtml = "";
   if (shouldFetch("courses") || shouldFetch("profile")) {
     const ttUrls = [
+      ...(cachedTtUrl ? [cachedTtUrl] : []),
       `${BASE_URL}/srm_university/academia-academic-services/page/My_Time_Table_2025_26`,
       `${BASE_URL}/srm_university/academia-academic-services/page/My_Time_Table_2024_25`,
       `${BASE_URL}/srm_university/academia-academic-services/page/My_Time_Table_2023_24`,
       `${BASE_URL}/srm_university/academia-academic-services/page/My_Time_Table`
     ];
 
-    for (const url of ttUrls) {
+    // Deduplicate in case cached matches one of the defaults
+    const uniqueUrls = Array.from(new Set(ttUrls));
+
+    for (const url of uniqueUrls) {
       console.log(`🔍 [POKÉDEX] PROBING TIMETABLE PATH: ${url.split('/').pop()}`);
       ttHtml = await fetchSanitized(url, cookies);
       if (ttHtml === "AUTH_ERROR") throw new Error("AUTH_ERROR");
       if (ttHtml && ttHtml.includes("Course Code")) {
         console.log("✅ [POKÉDEX] TIMETABLE MATRIX IDENTIFIED.");
+        data.activeTtUrl = url; // Pass back the working URL for persistence
         break;
       }
     }

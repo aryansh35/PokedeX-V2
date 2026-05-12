@@ -19,6 +19,17 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
    const [dayOrder, setDayOrder] = useState(0);
    const [lastSynced, setLastSynced] = useState<number | null>(null);
 
+   const forceLogout = useCallback(() => {
+      localStorage.clear();
+      sessionStorage.clear();
+      if ('caches' in window) {
+         caches.keys().then(names => {
+            names.forEach(name => caches.delete(name));
+         });
+      }
+      window.location.href = "/login";
+   }, []);
+
    const load = useCallback(async (force: boolean = false, isRetry: boolean = false) => {
       setLoading(true);
       try {
@@ -31,7 +42,6 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
 
          const targets: string[] = [];
          
-         // Smart Heartbeat: Cache Day Order for 6 hours + Midnight Reset
          const lastDOFetch = currentCache?.dayOrderTimestamp || 0;
          const isNewDay = new Date().toDateString() !== new Date(lastDOFetch).toDateString();
          
@@ -49,7 +59,6 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             if (staticAge > TWENTY_FOUR_HOURS && !targets.includes("courses")) targets.push("courses", "profile");
          }
 
-         // If everything is fresh, just use cache
          if (targets.length === 0 && currentCache) {
             setData(currentCache.data);
             setDayOrder(currentCache.dayOrder || 0);
@@ -83,22 +92,13 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             setDayOrder(liveDO);
             setLastSynced(updatedCache.dynamicTimestamp);
          } else if (res.error === "AUTH_ERROR") {
-            // CRITICAL: Session terminated elsewhere. Wipe and Redirect.
-            localStorage.clear();
-            sessionStorage.clear();
-            if ('caches' in window) {
-               caches.keys().then(names => {
-                  names.forEach(name => caches.delete(name));
-               });
-            }
-            window.location.href = "/login";
+            forceLogout();
             return;
          } else if (currentCache) {
             setData(currentCache.data);
             setDayOrder(currentCache.dayOrder || 0);
             setLastSynced(currentCache.dynamicTimestamp);
          } else if (!isRetry) {
-            // Automatic Tactical Retry if fresh login fails
             console.warn("Retrying SRM Link...");
             setTimeout(() => load(force, true), 1000);
             return; 
@@ -109,11 +109,24 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
       } finally {
          if (!isRetry) setLoading(false);
       }
-   }, []);
+   }, [forceLogout]);
 
    useEffect(() => {
       load();
    }, [load]);
+
+   // Heartbeat Security: Background Pulse to verify session every 5 minutes
+   useEffect(() => {
+      const interval = setInterval(async () => {
+         try {
+            const res = await getDashboardData(["dayOrder"]);
+            if (!res.success && res.error === "AUTH_ERROR") {
+               forceLogout();
+            }
+         } catch (e) { /* ignore network noise */ }
+      }, 300000); 
+      return () => clearInterval(interval);
+   }, [forceLogout]);
 
    return (
       <DashboardContext.Provider value={{ data, loading, dayOrder, lastSynced, refreshData: load }}>

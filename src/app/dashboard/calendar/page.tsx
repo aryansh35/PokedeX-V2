@@ -41,7 +41,7 @@ export default function CalendarPage() {
                <p className="text-muted-foreground font-medium text-sm lg:text-lg">Even Semester 2025-26 Matrix</p>
             </div>
 
-            <div className="flex bg-white/5 p-1 lg:p-1.5 rounded-[1.5rem] border border-white/10 items-center gap-2 lg:gap-4 w-full max-w-xs mx-auto lg:mx-0 lg:w-fit justify-between">
+            <div className="flex bg-white/5 p-1 lg:p-1.5 rounded-full border border-white/10 items-center gap-2 lg:gap-4 w-full max-w-xs mx-auto lg:mx-0 lg:w-fit justify-between">
                <button
                   onClick={() => setActiveMonthIdx(prev => Math.max(0, prev - 1))}
                   disabled={activeMonthIdx === 0}
@@ -122,7 +122,7 @@ export default function CalendarPage() {
                const activeToday = isToday(day.dt, currentMonth.month);
 
                return (
-                  <div key={i} className={`glass-card rounded-[2rem] p-6 border-white/5 relative overflow-hidden group transition-all hover:scale-[1.02] 
+                  <div key={i} className={`glass-card rounded-[2.5rem] p-6 border-white/5 relative overflow-hidden group transition-all hover:scale-[1.02] 
                      ${activeToday ? 'ring-2 ring-primary bg-primary/5 shadow-[0_0_40px_rgba(var(--primary-rgb),0.2)]' : ''}
                      ${isNonWorking ? 'bg-red-500/10 border-red-500/20' : isCritical ? 'bg-primary/5' : ''}`}>
 

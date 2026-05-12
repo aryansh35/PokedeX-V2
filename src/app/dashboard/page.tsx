@@ -37,7 +37,7 @@ import { useDashboard } from "@/context/DashboardContext";
 export default function MasterDashboard() {
    const { data, loading, dayOrder } = useDashboard();
    const [activeBatch, setActiveBatch] = useState(1);
-   const [currentTime, setCurrentTime] = useState(new Date());
+   const [currentTime, setCurrentTime] = useState<Date | null>(null);
    const [dateStr, setDateStr] = useState("");
    const [callsign, setCallsign] = useState<string>("");
    const [greetingPrefix, setGreetingPrefix] = useState<string>("Hello");
@@ -138,9 +138,12 @@ export default function MasterDashboard() {
    const matrix = activeBatch === 1 ? BATCH_1 : BATCH_2;
    const todaySlots = (dayOrder > 0 && dayOrder <= 5) ? matrix[dayOrder - 1] : [];
 
-   const avgAttendance = data?.attendance?.length > 0
-      ? (data.attendance.reduce((acc: number, curr: any) => acc + parseFloat(curr.attendance), 0) / data.attendance.length).toFixed(1)
-      : "0.0";
+   const avgAttendance = (() => {
+      if (!data?.attendance || data.attendance.length === 0) return "0.0";
+      const totalConducted = data.attendance.reduce((acc: number, curr: any) => acc + (parseInt(curr.conducted) || 0), 0);
+      const totalAbsent = data.attendance.reduce((acc: number, curr: any) => acc + (parseInt(curr.absent) || 0), 0);
+      return totalConducted > 0 ? (((totalConducted - totalAbsent) / totalConducted) * 100).toFixed(1) : "0.0";
+   })();
 
    const avgMarks = data?.marks?.length > 0
       ? (() => {
@@ -271,7 +274,7 @@ export default function MasterDashboard() {
                         </div>
                         <span className="w-1.5 h-1.5 bg-white/20 rounded-full hidden sm:block" />
                         <span className="text-primary uppercase tracking-widest text-xs lg:text-sm">
-                           {(currentTime.getDay() === 0 || currentTime.getDay() === 6)
+                           {(currentTime && (currentTime.getDay() === 0 || currentTime.getDay() === 6))
                               ? "Holiday"
                               : dayOrder > 0
                                  ? `Day Order ${dayOrder}`
@@ -279,10 +282,10 @@ export default function MasterDashboard() {
                         </span>
                         <span className="w-1.5 h-1.5 bg-white/20 rounded-full hidden sm:block" />
 
-                        <div className="flex items-center gap-2 text-white/80">
+                        <div className="flex items-center gap-2 text-white/80 min-w-[80px]">
                            <Clock size={16} className="text-primary animate-pulse" />
                            <span className="tabular-nums uppercase text-xs tracking-widest">
-                              {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+                              {currentTime ? currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : "--:-- --"}
                            </span>
                         </div>
                      </div>
@@ -308,7 +311,7 @@ export default function MasterDashboard() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                {/* Left Column: Intelligence & Missions */}
-               <div className="lg:col-span-8 space-y-12">
+               <div className="lg:col-span-3 space-y-12">
                   {/* Today's Missions */}
                   <section className="space-y-6 lg:space-y-8">
                      <div className="flex items-center justify-between gap-2">

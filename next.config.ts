@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ['10.3.122.34'],
   experimental: {
-    globalNotFound: true,
   },
   images: {
     qualities: [75, 85, 95, 100],

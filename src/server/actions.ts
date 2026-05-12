@@ -155,6 +155,7 @@ export async function getDashboardData(targets?: string[]) {
   const cookieStore = await cookies();
   const session = cookieStore.get("token")?.value;
   const userEmail = cookieStore.get("user")?.value;
+  const cachedTtUrl = cookieStore.get("cached_tt_url")?.value;
 
   if (!session) redirect("/login");
 
@@ -163,8 +164,13 @@ export async function getDashboardData(targets?: string[]) {
     const hasOnlyDayOrder = targets?.length === 1 && targets[0] === "dayOrder";
     
     if (!hasOnlyDayOrder) {
-      const scraped = await scrapeEverything(session, userEmail, targets);
+      const scraped = await scrapeEverything(session, userEmail, targets, cachedTtUrl);
       data = { ...scraped };
+
+      // Persist the working timetable URL if found
+      if (data.activeTtUrl) {
+        cookieStore.set("cached_tt_url", data.activeTtUrl, { httpOnly: true, secure: true, maxAge: 2592000, path: "/" });
+      }
     }
     
     if (targets?.includes("dayOrder")) {
