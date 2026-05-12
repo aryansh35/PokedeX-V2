@@ -12,7 +12,22 @@ import { useState } from "react";
 import { DashboardProvider, useDashboard } from "@/context/DashboardContext";
 
 const Pokeball = ({ className }: { className?: string }) => (
-  <img src="/logo.png" alt="Pokéball" className={className} />
+  <svg 
+    viewBox="0 0 100 100" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className}
+  >
+    {/* Background Circle */}
+    <circle cx="50" cy="50" r="44" fill="white" />
+    {/* Top Half (Theme Color) */}
+    <path d="M50 6A44 44 0 0 1 94 50H62A12 12 0 0 0 38 50H6A44 44 0 0 1 50 6Z" fill="currentColor" />
+    {/* Center Button & Lines */}
+    <circle cx="50" cy="50" r="12" fill="white" stroke="#000" strokeWidth="6" />
+    <path d="M2 50H38" stroke="#000" strokeWidth="6" strokeLinecap="round" />
+    <path d="M62 50H98" stroke="#000" strokeWidth="6" strokeLinecap="round" />
+    <circle cx="50" cy="50" r="47" stroke="#000" strokeWidth="6" />
+  </svg>
 );
 
 function InnerDashboardContent({ children }: { children: React.ReactNode }) {
@@ -98,8 +113,8 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
 
         <div className="p-8 pt-6 lg:pt-8">
           <div className="flex items-center gap-3 group cursor-default">
-            <div className="w-10 h-10 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Pokeball className="w-10 h-10" />
+            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform">
+              <Pokeball className="w-6 h-6 text-white" />
             </div>
             <h1 className="text-2xl font-black tracking-tighter italic">Pokéde<span className="text-primary">X</span></h1>
           </div>
