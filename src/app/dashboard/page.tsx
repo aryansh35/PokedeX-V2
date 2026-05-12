@@ -211,7 +211,7 @@ export default function MasterDashboard() {
       <div className="pb-32">
          {/* Hero Header */}
          <div className="p-4 lg:p-8 space-y-8 lg:space-y-12 max-w-7xl mx-auto">
-            <header className="flex flex-col gap-8 mt-4">
+            <header className="flex flex-col gap-8">
                <div className="text-center space-y-2 group">
                   <p className="text-[10px] font-black uppercase tracking-[0.5em] text-primary/40 mb-1">Authenticated Access</p>
 

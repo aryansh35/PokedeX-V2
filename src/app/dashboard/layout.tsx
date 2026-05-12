@@ -113,8 +113,8 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
 
         <div className="p-8 pt-6 lg:pt-8">
           <div className="flex items-center gap-3 group cursor-default">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform">
-              <Pokeball className="w-6 h-6 text-white" />
+            <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform">
+              <Pokeball className="w-5 h-5 text-white" />
             </div>
             <h1 className="text-2xl font-black tracking-tighter italic">Pokéde<span className="text-primary">X</span></h1>
           </div>
@@ -164,7 +164,7 @@ function InnerDashboardContent({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 lg:ml-72 min-h-screen w-full relative pt-24 lg:pt-24">
+      <main className="flex-1 lg:ml-72 min-h-screen w-full relative pt-16 lg:pt-16">
         {children}
       </main>
     </div>

@@ -148,12 +148,12 @@ export default function LoginPage() {
         <div className="text-center space-y-6">
           <div className="relative inline-block group">
             <div className={`absolute inset-0 bg-primary/20 blur-2xl rounded-full scale-150 transition-opacity duration-700 ${isAuthorized ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
-            <div className={`relative inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.3)] transform transition-all duration-500 border border-white/20 ${isAuthorized ? 'animate-authorize' : '-rotate-6 group-hover:rotate-0'}`}>
-              <Pokeball className="w-14 h-14 text-white drop-shadow-lg" />
+            <div className={`relative inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.3)] transform transition-all duration-500 border border-white/20 ${isAuthorized ? 'animate-authorize' : '-rotate-6 group-hover:rotate-0'}`}>
+              <Pokeball className="w-10 h-10 text-white drop-shadow-lg" />
             </div>
           </div>
           <div className="space-y-2">
-            <h1 className="text-5xl lg:text-6xl font-black tracking-tighter italic uppercase text-white leading-none">
+            <h1 className="text-4xl lg:text-6xl font-black tracking-tighter italic uppercase text-white leading-none">
               Pokéde<span className="text-primary drop-shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]">X</span>
             </h1>
             <div className="flex items-center justify-center gap-3">
