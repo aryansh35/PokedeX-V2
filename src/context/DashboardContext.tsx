@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { getDashboardData } from "@/server/actions";
 
+import { getDayOrderFromPlanner } from "@/lib/planner-data";
+
 interface DashboardContextType {
    data: any;
    loading: boolean;
@@ -18,7 +20,7 @@ const DashboardContext = createContext<DashboardContextType | undefined>(undefin
 export function DashboardProvider({ children }: { children: React.ReactNode }) {
    const [data, setData] = useState<any>(null);
    const [loading, setLoading] = useState(true);
-   const [dayOrder, setDayOrder] = useState(0);
+   const [dayOrder, setDayOrder] = useState(() => getDayOrderFromPlanner());
    const [lastSynced, setLastSynced] = useState<number | null>(null);
    const [theme, setThemeState] = useState<string>("onyx");
 
@@ -52,7 +54,9 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
 
       if (currentCache && !force && !isRetry) {
          setData(currentCache.data);
-         setDayOrder(currentCache.dayOrder || 0);
+         // Prioritize Planner but keep cache if planner is zero and cache has value
+         const plannerDO = getDayOrderFromPlanner();
+         setDayOrder(plannerDO || currentCache.dayOrder || 0);
          setLastSynced(currentCache.dynamicTimestamp);
          setLoading(false); // UI is now interactive with cached data
       } else if (!isRetry) {
@@ -68,6 +72,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
          const lastDOFetch = currentCache?.dayOrderTimestamp || 0;
          const isNewDay = new Date().toDateString() !== new Date(lastDOFetch).toDateString();
 
+         // We still fetch dayOrder as a "live verification" but prioritize planner
          if (force || !currentCache || isNewDay || (now - lastDOFetch > SIX_HOURS)) {
             targets.push("dayOrder");
          }
@@ -109,7 +114,9 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             if (targets.includes("courses") && newData.courses?.length > 0) merged.courses = newData.courses;
             if (targets.includes("profile") && newData.profile?.name) merged.profile = newData.profile;
 
-            const liveDO = targets.includes("dayOrder") ? newData.dayOrder : (currentCache?.dayOrder || 0);
+            // INTELLIGENCE: Prioritize Planner, fallback to liveDO
+            const plannerDO = getDayOrderFromPlanner();
+            const liveDO = targets.includes("dayOrder") ? (newData.dayOrder || plannerDO) : (currentCache?.dayOrder || plannerDO);
 
             const updatedCache = {
                data: merged,
