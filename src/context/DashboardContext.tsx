@@ -8,6 +8,8 @@ interface DashboardContextType {
    loading: boolean;
    dayOrder: number;
    lastSynced: number | null;
+   theme: string;
+   setTheme: (theme: string) => void;
    refreshData: (force?: boolean) => Promise<void>;
 }
 
@@ -18,6 +20,19 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
    const [loading, setLoading] = useState(true);
    const [dayOrder, setDayOrder] = useState(0);
    const [lastSynced, setLastSynced] = useState<number | null>(null);
+   const [theme, setThemeState] = useState<string>("onyx");
+
+   useEffect(() => {
+      const savedTheme = localStorage.getItem("pokedex_theme") || "onyx";
+      setThemeState(savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
+   }, []);
+
+   const setTheme = (newTheme: string) => {
+      setThemeState(newTheme);
+      localStorage.setItem("pokedex_theme", newTheme);
+      document.documentElement.setAttribute("data-theme", newTheme);
+   };
 
    const forceLogout = useCallback(() => {
       localStorage.clear();
@@ -34,7 +49,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
       // If we already have data and this isn't a force refresh, don't block the UI
       const cached = localStorage.getItem("pokedex_cache");
       let currentCache = cached ? JSON.parse(cached) : null;
-      
+
       if (currentCache && !force && !isRetry) {
          setData(currentCache.data);
          setDayOrder(currentCache.dayOrder || 0);
@@ -52,7 +67,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
          const targets: string[] = [];
          const lastDOFetch = currentCache?.dayOrderTimestamp || 0;
          const isNewDay = new Date().toDateString() !== new Date(lastDOFetch).toDateString();
-         
+
          if (force || !currentCache || isNewDay || (now - lastDOFetch > SIX_HOURS)) {
             targets.push("dayOrder");
          }
@@ -62,7 +77,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
          } else {
             const dynamicAge = now - (currentCache.dynamicTimestamp || 0);
             const staticAge = now - (currentCache.staticTimestamp || 0);
-            
+
             if (dynamicAge > SIX_HOURS && !targets.includes("attendance")) targets.push("attendance", "marks");
             if (staticAge > TWENTY_FOUR_HOURS && !targets.includes("courses")) targets.push("courses", "profile");
          }
@@ -82,20 +97,20 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
 
          if (res.success) {
             const newData = res.data;
-            
+
             // VALIDATION: Ensure we don't overwrite good cache with empty data (SRM glitch)
             const hasNewAttendance = newData.attendance && newData.attendance.length > 0;
             const hasNewMarks = newData.marks && newData.marks.length > 0;
-            
+
             const merged = currentCache ? { ...currentCache.data } : {};
-            
+
             if (targets.includes("attendance") && hasNewAttendance) merged.attendance = newData.attendance;
             if (targets.includes("marks") && hasNewMarks) merged.marks = newData.marks;
             if (targets.includes("courses") && newData.courses?.length > 0) merged.courses = newData.courses;
             if (targets.includes("profile") && newData.profile?.name) merged.profile = newData.profile;
-            
+
             const liveDO = targets.includes("dayOrder") ? newData.dayOrder : (currentCache?.dayOrder || 0);
-            
+
             const updatedCache = {
                data: merged,
                dayOrder: liveDO,
@@ -119,7 +134,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
          } else if (!isRetry) {
             console.warn("Retrying SRM Link...");
             setTimeout(() => load(force, true), 1000);
-            return; 
+            return;
          }
       } catch (error) {
          console.error("Dashboard Intelligence Error:", error);
@@ -133,21 +148,46 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
       load();
    }, [load]);
 
-   // Heartbeat Security: Background Pulse to verify session every 5 minutes
+   // Hybrid Heartbeat Security: Background Pulse + Visibility/Focus Verification
    useEffect(() => {
-      const interval = setInterval(async () => {
+      let lastCheck = 0;
+      const COOLDOWN = 60000; // 1 minute cooldown to prevent spamming SRM
+
+      const checkSession = async () => {
+         const now = Date.now();
+         if (now - lastCheck < COOLDOWN) return;
+
+         lastCheck = now;
          try {
             const res = await getDashboardData(["dayOrder"]);
             if (!res.success && res.error === "AUTH_ERROR") {
                forceLogout();
             }
          } catch (e) { /* ignore network noise */ }
-      }, 300000); 
-      return () => clearInterval(interval);
+      };
+
+      // 1. Periodic Pulse (Every 5 minutes)
+      const interval = setInterval(checkSession, 300000);
+
+      // 2. Visibility Pulse (Triggered when tab becomes active or app re-opened)
+      const handleVisibilityChange = () => {
+         if (document.visibilityState === 'visible') {
+            checkSession();
+         }
+      };
+
+      window.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('focus', checkSession);
+
+      return () => {
+         clearInterval(interval);
+         window.removeEventListener('visibilitychange', handleVisibilityChange);
+         window.removeEventListener('focus', checkSession);
+      };
    }, [forceLogout]);
 
    return (
-      <DashboardContext.Provider value={{ data, loading, dayOrder, lastSynced, refreshData: load }}>
+      <DashboardContext.Provider value={{ data, loading, dayOrder, lastSynced, theme, setTheme, refreshData: load }}>
          {children}
       </DashboardContext.Provider>
    );

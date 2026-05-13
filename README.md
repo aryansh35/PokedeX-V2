@@ -42,15 +42,6 @@ A multi-tier scraping engine that performs secure handshakes with the SRM Academ
 
 ---
 
-## 🚀 Deployment (Vercel)
-
-1. **Push to GitHub**: Ensure your repository is private.
-2. **Import to Vercel**: Connect your repository to Vercel.
-3. **Environment Variables**: Add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` if applicable.
-4. **Build**: Vercel will automatically detect Next.js and deploy the mission control terminal.
-
----
-
 ## 🛠️ Tech Stack
 
 - **Core**: [Next.js 16 (App Router)](https://nextjs.org/)

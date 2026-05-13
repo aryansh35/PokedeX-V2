@@ -99,10 +99,10 @@ export default function MasterDashboard() {
    }, [data]);
 
    if (loading) return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b]">
+      <div className="min-h-screen flex items-center justify-center bg-background">
          <div className="flex flex-col items-center gap-6">
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 animate-bounce">
-               <svg viewBox="0 0 100 100" className="w-10 h-10 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <svg viewBox="0 0 100 100" className="w-10 h-10 text-foreground" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="50" cy="50" r="44" fill="white" />
                   <path d="M50 6A44 44 0 0 1 94 50H62A12 12 0 0 0 38 50H6A44 44 0 0 1 50 6Z" fill="currentColor" />
                   <circle cx="50" cy="50" r="12" fill="white" stroke="#000" strokeWidth="6" />
@@ -117,24 +117,24 @@ export default function MasterDashboard() {
    );
 
    if (!data && !loading) return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b] p-6">
+      <div className="min-h-screen flex items-center justify-center bg-background p-6">
          <div className="glass-card rounded-[2.5rem] p-8 lg:p-12 border-rose-500/20 text-center space-y-6 max-w-md w-full">
             <div className="w-16 h-16 bg-rose-500/10 rounded-2xl flex items-center justify-center text-rose-500 mx-auto">
                <AlertCircle size={32} />
             </div>
             <div className="space-y-2">
-               <h2 className="text-2xl font-black uppercase italic tracking-tighter text-white">Link Severed</h2>
-               <p className="text-xs font-bold text-white/40 uppercase tracking-widest leading-relaxed">
+               <h2 className="text-2xl font-black uppercase italic tracking-tighter text-foreground">Link Severed</h2>
+               <p className="text-xs font-bold text-foreground/40 uppercase tracking-widest leading-relaxed">
                   Could not establish a secure connection to SRM Academia. 
                </p>
             </div>
             <button 
                onClick={() => window.location.reload()}
-               className="w-full py-4 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-2xl shadow-primary/20 active:scale-95 transition-all"
+               className="w-full py-4 bg-primary text-foreground text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl shadow-2xl shadow-primary/20 active:scale-95 transition-all"
             >
                Retry Connection
             </button>
-            <Link href="/login" className="block text-[9px] font-black uppercase text-white/20 tracking-widest hover:text-white transition-colors">
+            <Link href="/login" className="block text-[9px] font-black uppercase text-foreground/20 tracking-widest hover:text-foreground transition-colors">
                Return to Login
             </Link>
          </div>
@@ -219,8 +219,108 @@ export default function MasterDashboard() {
 
    const todayMissions = getTodayMissions();
 
+   const getCurrentMission = () => {
+      if (!currentTime || todayMissions.length === 0) return null;
+      return todayMissions.find((m: any) => m.isLive);
+   };
+
+   const getNextMission = () => {
+      if (!currentTime || todayMissions.length === 0) return null;
+      const now = currentTime.getHours() * 60 + currentTime.getMinutes();
+      return todayMissions.find((m: any) => {
+         const [startStr] = m.time.split(" - ");
+         const [time, period] = startStr.split(" ");
+         let [h, m_] = time.split(":").map(Number);
+         if (period === "PM" && h !== 12) h += 12;
+         const start = h * 60 + m_;
+         return start > now;
+      });
+   };
+
+   const activeMission = getCurrentMission();
+   const nextMission = getNextMission();
+
+   // Calculate progress for active mission
+   let missionProgress = 0;
+   if (activeMission && currentTime) {
+      const [startStr, endStr] = activeMission.time.split(" - ");
+      const parseToMinutes = (tStr: string) => {
+         const [time, period] = tStr.split(" ");
+         let [h, m] = time.split(":").map(Number);
+         if (period === "PM" && h !== 12) h += 12;
+         return h * 60 + m;
+      };
+      const start = parseToMinutes(startStr);
+      const end = parseToMinutes(endStr);
+      const now = currentTime.getHours() * 60 + currentTime.getMinutes();
+      missionProgress = Math.min(100, Math.max(0, ((now - start) / (end - start)) * 100));
+   }
+
    return (
       <div className="pb-32">
+         {/* Live Mission Tracker (Suggestion 6) */}
+         {activeMission && (
+            <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-8">
+               <div className="glass-card rounded-[2.5rem] border-primary/20 overflow-hidden relative group">
+                  <div className="absolute top-0 right-0 p-8 text-primary/5 group-hover:text-primary/10 transition-all pointer-events-none">
+                     <Zap size={140} strokeWidth={2.5} />
+                  </div>
+                  
+                  <div className="p-8 lg:p-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                     <div className="space-y-4 flex-1">
+                        <div className="flex items-center gap-3">
+                           <div className="px-3 py-1 bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest rounded-full animate-pulse">
+                              Mission Active
+                           </div>
+                           <span className="text-foreground/20 text-[10px] font-bold uppercase tracking-widest">
+                              Period {activeMission.hour} • {activeMission.time}
+                           </span>
+                        </div>
+                        
+                        <div className="space-y-1">
+                           <h2 className="text-2xl lg:text-4xl font-black text-foreground uppercase italic tracking-tighter">
+                              {activeMission.courseName}
+                           </h2>
+                           <p className="text-primary font-bold text-sm lg:text-lg flex items-center gap-2">
+                              <MapPin size={18} /> {activeMission.room || "Room Pending"}
+                           </p>
+                        </div>
+
+                        <div className="space-y-2 max-w-md">
+                           <div className="flex justify-between text-[9px] font-black uppercase tracking-widest text-foreground/40">
+                              <span>Mission Progress</span>
+                              <span>{Math.round(missionProgress)}%</span>
+                           </div>
+                           <div className="h-1.5 w-full bg-foreground/5 rounded-full overflow-hidden">
+                              <div 
+                                 className="h-full bg-primary transition-all duration-1000 ease-linear shadow-[0_0_15px_rgba(var(--primary),0.5)]" 
+                                 style={{ width: `${missionProgress}%` }} 
+                              />
+                           </div>
+                        </div>
+                     </div>
+
+                     {nextMission && (
+                        <div className="lg:border-l lg:border-primary/10 lg:pl-12 space-y-3">
+                           <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Next Objective</p>
+                           <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 bg-foreground/5 rounded-xl flex items-center justify-center text-primary/40">
+                                 <ChevronRight size={20} />
+                              </div>
+                              <div>
+                                 <p className="text-sm font-bold text-foreground uppercase italic">{nextMission.courseName}</p>
+                                 <p className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest">
+                                    Starts at {nextMission.time.split(" - ")[0]}
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     )}
+                  </div>
+               </div>
+            </div>
+         )}
+
          {/* Hero Header */}
          <div className="p-4 lg:p-8 space-y-8 lg:space-y-12 max-w-7xl mx-auto">
             <header className="flex flex-col gap-8">
@@ -238,7 +338,7 @@ export default function MasterDashboard() {
                                  localStorage.setItem("academiax_prefix", e.target.value);
                               }}
                               onKeyDown={(e) => e.key === 'Enter' && handleBlur()}
-                              className="bg-transparent border-none outline-none text-3xl lg:text-7xl font-black tracking-tighter text-white/40 uppercase italic leading-none text-right w-1/2 focus:ring-0"
+                              className="bg-transparent border-none outline-none text-3xl lg:text-7xl font-black tracking-tighter text-foreground/40 uppercase italic leading-none text-right w-1/2 focus:ring-0"
                               placeholder="Prefix..."
                            />
                            <input
@@ -248,13 +348,13 @@ export default function MasterDashboard() {
                                  localStorage.setItem("academiax_callsign", e.target.value);
                               }}
                               onKeyDown={(e) => e.key === 'Enter' && handleBlur()}
-                              className="bg-transparent border-none outline-none text-4xl lg:text-8xl font-black tracking-tighter text-white uppercase italic leading-none text-left w-1/2 focus:ring-0"
+                              className="bg-transparent border-none outline-none text-4xl lg:text-8xl font-black tracking-tighter text-foreground uppercase italic leading-none text-left w-1/2 focus:ring-0"
                               placeholder="Callsign..."
                            />
                         </div>
                         <button
                            onClick={handleBlur}
-                           className="px-8 py-2 bg-primary text-[10px] font-black uppercase tracking-[0.4em] text-white rounded-full shadow-2xl shadow-primary/20 hover:scale-110 active:scale-95 transition-all flex items-center gap-2"
+                           className="px-8 py-2 bg-primary text-[10px] font-black uppercase tracking-[0.4em] text-foreground rounded-full shadow-2xl shadow-primary/20 hover:scale-110 active:scale-95 transition-all flex items-center gap-2"
                         >
                            <Check size={14} strokeWidth={4} />
                            Lock In ?!
@@ -263,9 +363,9 @@ export default function MasterDashboard() {
                   ) : (
                      <h1
                         onClick={() => setIsEditingGreeting(true)}
-                        className="text-4xl lg:text-8xl font-black tracking-tighter text-white uppercase italic leading-none cursor-pointer hover:scale-[1.01] transition-transform flex items-center justify-center gap-4"
+                        className="text-4xl lg:text-8xl font-black tracking-tighter text-foreground uppercase italic leading-none cursor-pointer hover:scale-[1.01] transition-transform flex items-center justify-center gap-4"
                      >
-                        <span className="text-white/40 text-3xl lg:text-7xl">{greetingPrefix}</span>
+                        <span className="text-foreground/40 text-3xl lg:text-7xl">{greetingPrefix}</span>
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500">{callsign || 'User'}!</span>
                      </h1>
                   )}
@@ -273,15 +373,15 @@ export default function MasterDashboard() {
 
                <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
                   <div className="flex-1">
-                     <h2 className="text-3xl lg:text-5xl font-black tracking-tighter text-white uppercase italic leading-none mb-4">
-                        Pokéde<span className="text-primary">X</span> <span className="text-white/20 font-light not-italic text-lg lg:text-3xl ml-2">Mission Control</span>
+                     <h2 className="text-3xl lg:text-5xl font-black tracking-tighter text-foreground uppercase italic leading-none mb-4">
+                        Pokéde<span className="text-primary">X</span> <span className="text-foreground/20 font-light not-italic text-lg lg:text-3xl ml-2">Mission Control</span>
                      </h2>
                      <div className="flex flex-wrap items-center gap-4 lg:gap-6 text-muted-foreground font-bold">
                         <div className="flex items-center gap-2">
                            <Calendar size={18} className="text-primary" />
                            <span className="text-sm lg:text-base">{dateStr}</span>
                         </div>
-                        <span className="w-1.5 h-1.5 bg-white/20 rounded-full hidden sm:block" />
+                        <span className="w-1.5 h-1.5 bg-foreground/20 rounded-full hidden sm:block" />
                         <span className="text-primary uppercase tracking-widest text-xs lg:text-sm">
                            {(currentTime && (currentTime.getDay() === 0 || currentTime.getDay() === 6))
                               ? "Holiday"
@@ -289,9 +389,9 @@ export default function MasterDashboard() {
                                  ? `Day Order ${dayOrder}`
                                  : "Searching..."}
                         </span>
-                        <span className="w-1.5 h-1.5 bg-white/20 rounded-full hidden sm:block" />
+                        <span className="w-1.5 h-1.5 bg-foreground/20 rounded-full hidden sm:block" />
 
-                        <div className="flex items-center gap-2 text-white/80 min-w-[80px]">
+                        <div className="flex items-center gap-2 text-foreground/80 min-w-[80px]">
                            <Clock size={16} className="text-primary animate-pulse" />
                            <span className="tabular-nums uppercase text-xs tracking-widest">
                               {currentTime ? currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : "--:-- --"}
@@ -300,18 +400,18 @@ export default function MasterDashboard() {
                      </div>
                   </div>
                   <div className="flex items-center gap-6">
-                     <div className="px-6 py-3 bg-white/5 rounded-2xl border border-white/5 flex items-center gap-4">
+                     <div className="px-6 py-3 bg-foreground/5 rounded-2xl border border-primary/10 flex items-center gap-4">
                         <Activity className="text-primary" size={20} />
                         <div>
                            <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Avg Attendance</p>
-                           <p className="text-xl font-black text-white leading-none">{avgAttendance}%</p>
+                           <p className="text-xl font-black text-foreground leading-none">{avgAttendance}%</p>
                         </div>
                      </div>
-                     <div className="px-6 py-3 bg-white/5 rounded-2xl border border-white/5 flex items-center gap-4">
+                     <div className="px-6 py-3 bg-foreground/5 rounded-2xl border border-primary/10 flex items-center gap-4">
                         <TrendingUp className="text-primary" size={20} />
                         <div>
                            <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Avg Marks</p>
-                           <p className="text-xl font-black text-white leading-none">{avgMarks}%</p>
+                           <p className="text-xl font-black text-foreground leading-none">{avgMarks}%</p>
                         </div>
                      </div>
                   </div>
@@ -337,11 +437,11 @@ export default function MasterDashboard() {
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {todayMissions.map((mission: any, i: number) => (
-                           <div key={i} className={`glass-card rounded-[2.5rem] p-5 lg:p-6 border-2 transition-all group relative ${mission.isLive ? 'border-emerald-500/50 bg-emerald-500/[0.02] shadow-[0_0_40px_rgba(16,185,129,0.1)]' : 'border-white/5 hover:border-primary/20 hover:bg-primary/[0.02]'}`}>
+                           <div key={i} className={`glass-card rounded-[2.5rem] p-5 lg:p-6 border-2 transition-all group relative ${mission.isLive ? 'border-primary/50 bg-primary/[0.02] shadow-[0_0_40px_rgba(var(--primary),0.1)]' : 'border-primary/10 hover:border-primary/20 hover:bg-primary/[0.02]'}`}>
                               {mission.isLive && (
-                                 <div className="absolute -top-3 left-6 px-3 py-1 bg-emerald-500 rounded-full flex items-center gap-2 shadow-lg shadow-emerald-500/20 animate-pulse-subtle">
+                                 <div className="absolute -top-3 left-6 px-3 py-1 bg-primary rounded-full flex items-center gap-2 shadow-lg shadow-primary/20 animate-pulse-subtle">
                                     <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
-                                    <span className="text-[9px] font-black uppercase tracking-widest text-white">Live</span>
+                                    <span className="text-[9px] font-black uppercase tracking-widest text-foreground">Live</span>
                                  </div>
                               )}
                               <div className="flex items-start justify-between mb-4 lg:mb-6">
@@ -351,29 +451,29 @@ export default function MasterDashboard() {
                                     </div>
                                     <div>
                                        <p className="text-[9px] lg:text-[10px] font-black text-primary uppercase tracking-widest">Hour {mission.hour}</p>
-                                       <p className="text-xs lg:text-sm font-bold text-white/60">{mission.time}</p>
+                                       <p className="text-xs lg:text-sm font-bold text-foreground/60">{mission.time}</p>
                                     </div>
                                  </div>
-                                 <div className="px-3 py-1 bg-white/5 rounded-xl text-[9px] lg:text-[10px] font-black text-muted-foreground uppercase">
+                                 <div className="px-3 py-1 bg-foreground/5 rounded-xl text-[9px] lg:text-[10px] font-black text-muted-foreground uppercase">
                                     Slot {mission.activeSlot}
                                  </div>
                               </div>
-                              <h4 className="text-lg lg:text-xl font-black text-white uppercase italic mb-2 line-clamp-1">{mission.title}</h4>
-                              <div className="flex items-center gap-3 mt-4 border-t border-white/5 pt-4">
-                                 <div className="w-8 h-8 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500">
+                              <h4 className="text-lg lg:text-xl font-black text-foreground uppercase italic mb-2 line-clamp-1">{mission.title}</h4>
+                              <div className="flex items-center gap-3 mt-4 border-t border-primary/10 pt-4">
+                                 <div className="w-8 h-8 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                                     <MapPin size={14} />
                                  </div>
                                  <div>
                                     <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Room</p>
-                                    <p className="text-base lg:text-lg font-black text-white uppercase">{mission.room}</p>
+                                    <p className="text-base lg:text-lg font-black text-foreground uppercase">{mission.room}</p>
                                  </div>
                               </div>
                            </div>
                         ))}
                         {todayMissions.length === 0 && (
-                           <div className="col-span-2 py-16 flex flex-col items-center justify-center border-2 border-dashed border-white/5 rounded-[2.5rem]">
-                              <Zap size={48} className="text-white/5 mb-4" />
-                              <p className="text-sm font-black text-white/20 uppercase tracking-[0.3em]">No Missions Assigned Today</p>
+                           <div className="col-span-2 py-16 flex flex-col items-center justify-center border-2 border-dashed border-primary/10 rounded-[2.5rem]">
+                              <Zap size={48} className="text-foreground/5 mb-4" />
+                              <p className="text-sm font-black text-foreground/20 uppercase tracking-[0.3em]">No Missions Assigned Today</p>
                            </div>
                         )}
                      </div>
@@ -384,7 +484,7 @@ export default function MasterDashboard() {
                <div className="lg:col-span-4 space-y-8">
 
                   {/* Attendance Pulse (Focused on Today's Missions) */}
-                  <div className="glass-card rounded-[2.5rem] p-6 lg:p-8 border-white/5 space-y-6 lg:space-y-8">
+                  <div className="glass-card rounded-[2.5rem] p-6 lg:p-8 border-primary/10 space-y-6 lg:space-y-8">
                      <h3 className="text-lg lg:text-xl font-black uppercase italic tracking-widest flex items-center gap-3">
                         <Activity size={18} className="text-primary" />
                         Attendance Pulse
@@ -410,8 +510,8 @@ export default function MasterDashboard() {
                            if (todayAttendance.length === 0) {
                               return (
                                  <div className="py-6 lg:py-8 text-center space-y-3">
-                                    <CheckCircle2 className="mx-auto text-white/10" size={32} />
-                                    <p className="text-[10px] font-black uppercase text-white/20 tracking-[0.2em]">No Target Data for Today</p>
+                                    <CheckCircle2 className="mx-auto text-foreground/10" size={32} />
+                                    <p className="text-[10px] font-black uppercase text-foreground/20 tracking-[0.2em]">No Target Data for Today</p>
                                  </div>
                               );
                            }
@@ -419,12 +519,12 @@ export default function MasterDashboard() {
                            return todayAttendance.map((att: any, i: number) => (
                               <div key={i} className="space-y-2">
                                  <div className="flex justify-between items-end">
-                                    <p className="text-[10px] lg:text-xs font-black uppercase text-white truncate max-w-[70%]">{att.courseTitle}</p>
-                                    <p className={`text-xs lg:text-sm font-black ${parseFloat(att.attendance) < 75 ? 'text-red-500' : 'text-emerald-500'}`}>{att.attendance}%</p>
+                                    <p className="text-[10px] lg:text-xs font-black uppercase text-foreground truncate max-w-[70%]">{att.courseTitle}</p>
+                                    <p className={`text-xs lg:text-sm font-black ${parseFloat(att.attendance) < 75 ? 'text-red-500' : 'text-primary'}`}>{att.attendance}%</p>
                                  </div>
-                                 <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                 <div className="h-1.5 w-full bg-foreground/5 rounded-full overflow-hidden">
                                     <div
-                                       className={`h-full rounded-full transition-all duration-1000 ${parseFloat(att.attendance) < 75 ? 'bg-red-500' : 'bg-emerald-500'}`}
+                                       className={`h-full rounded-full transition-all duration-1000 ${parseFloat(att.attendance) < 75 ? 'bg-red-500' : 'bg-primary'}`}
                                        style={{ width: `${att.attendance}%` }}
                                     />
                                  </div>
@@ -433,14 +533,14 @@ export default function MasterDashboard() {
                         })()}
                      </div>
 
-                     <Link href="/dashboard/attendance" className="block w-full py-4 bg-white/5 hover:bg-white/10 rounded-2xl text-center text-[10px] font-black uppercase tracking-widest transition-all">
+                     <Link href="/dashboard/attendance" className="block w-full py-4 bg-foreground/5 hover:bg-foreground/10 rounded-2xl text-center text-[10px] font-black uppercase tracking-widest transition-all">
                         Full Tactical Report
                      </Link>
                   </div>
 
                   {/* Tactical Navigation */}
                   <div className="space-y-4">
-                     <Link href="/dashboard/attendance" className="glass-card rounded-[2.5rem] p-5 lg:p-6 border-white/5 flex items-center justify-between group hover:border-primary/20 transition-all">
+                     <Link href="/dashboard/attendance" className="glass-card rounded-[2.5rem] p-5 lg:p-6 border-primary/10 flex items-center justify-between group hover:border-primary/20 transition-all">
                         <div className="flex items-center gap-4">
                            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                               <CheckCircle2 size={18} />
@@ -449,7 +549,7 @@ export default function MasterDashboard() {
                         </div>
                         <ChevronRight size={18} className="text-muted-foreground group-hover:translate-x-1 transition-all" />
                      </Link>
-                     <Link href="/dashboard/timetable" className="glass-card rounded-[2.5rem] p-5 lg:p-6 border-white/5 flex items-center justify-between group hover:border-primary/20 transition-all">
+                     <Link href="/dashboard/timetable" className="glass-card rounded-[2.5rem] p-5 lg:p-6 border-primary/10 flex items-center justify-between group hover:border-primary/20 transition-all">
                         <div className="flex items-center gap-4">
                            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                               <Clock size={18} />
@@ -458,7 +558,7 @@ export default function MasterDashboard() {
                         </div>
                         <ChevronRight size={18} className="text-muted-foreground group-hover:translate-x-1 transition-all" />
                      </Link>
-                     <Link href="/dashboard/calendar" className="glass-card rounded-[2.5rem] p-5 lg:p-6 border-white/5 flex items-center justify-between group hover:border-primary/20 transition-all">
+                     <Link href="/dashboard/calendar" className="glass-card rounded-[2.5rem] p-5 lg:p-6 border-primary/10 flex items-center justify-between group hover:border-primary/20 transition-all">
                         <div className="flex items-center gap-4">
                            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                               <LayoutGrid size={18} />

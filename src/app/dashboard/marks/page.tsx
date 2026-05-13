@@ -20,10 +20,10 @@ export default function MarksPage() {
   };
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b]">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-6">
         <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 animate-bounce">
-          <svg viewBox="0 0 100 100" className="w-8 h-8 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 100 100" className="w-8 h-8 text-foreground" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="44" fill="white" />
             <path d="M50 6A44 44 0 0 1 94 50H62A12 12 0 0 0 38 50H6A44 44 0 0 1 50 6Z" fill="currentColor" />
             <circle cx="50" cy="50" r="12" fill="white" stroke="#000" strokeWidth="6" />
@@ -79,8 +79,8 @@ export default function MarksPage() {
                     onClick={() => setTargetGrade(g.label)}
                     className={`px-4 py-2 rounded-xl text-xs font-black transition-all ${
                        targetGrade === g.label 
-                       ? "bg-primary text-white shadow-lg shadow-primary/20 scale-105" 
-                       : "bg-white/5 text-muted-foreground hover:bg-white/10"
+                       ? "bg-primary text-foreground shadow-lg shadow-primary/20 scale-105" 
+                       : "bg-foreground/5 text-muted-foreground hover:bg-foreground/10"
                     }`}
                  >
                     {g.label}
@@ -88,9 +88,9 @@ export default function MarksPage() {
               ))}
            </div>
 
-           <div className="px-8 py-4 rounded-2xl bg-white/5 border border-white/5 text-center min-w-[140px]">
+           <div className="px-8 py-4 rounded-2xl bg-foreground/5 border border-primary/10 text-center min-w-[140px]">
               <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground mb-1">Required / 75</p>
-              <p className={`text-2xl font-black italic tracking-tighter ${requiredFromEndSem75 > 75 ? 'text-rose-500' : requiredFromEndSem75 <= 0 ? 'text-emerald-500' : 'text-white'}`}>
+              <p className={`text-2xl font-black italic tracking-tighter ${requiredFromEndSem75 > 75 ? 'text-rose-500' : requiredFromEndSem75 <= 0 ? 'text-primary' : 'text-foreground'}`}>
                  {requiredFromEndSem75 > 75 ? "EXCEEDED" : requiredFromEndSem75 <= 0 ? "SECURED" : requiredFromEndSem75.toFixed(1)}
               </p>
            </div>
@@ -112,14 +112,14 @@ export default function MarksPage() {
       </div>
       <div className="space-y-8">
         {marks.map((course: any, i: number) => (
-          <div key={i} className="glass-card rounded-[2.5rem] p-6 lg:p-12 border-white/5 hover:border-primary/20 transition-all relative overflow-hidden group">
+          <div key={i} className="glass-card rounded-[2.5rem] p-6 lg:p-12 border-primary/10 hover:border-primary/20 transition-all relative overflow-hidden group">
              <div className="absolute top-0 right-0 p-12 text-primary/5 group-hover:text-primary/10 transition-all">
                 <Zap size={160} strokeWidth={3} />
              </div>
 
              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-10 mb-8 lg:mb-12 relative z-10">
                 <div className="flex items-start gap-4 lg:gap-8 flex-1">
-                   <div className="w-14 h-14 lg:w-20 lg:h-20 bg-primary rounded-2xl lg:rounded-3xl flex items-center justify-center text-white shadow-2xl shadow-primary/20 flex-shrink-0">
+                   <div className="w-14 h-14 lg:w-20 lg:h-20 bg-primary rounded-2xl lg:rounded-3xl flex items-center justify-center text-foreground shadow-2xl shadow-primary/20 flex-shrink-0">
                       <BookOpen className="w-7 h-7 lg:w-9 lg:h-9" />
                    </div>
                    <div>
@@ -127,7 +127,7 @@ export default function MarksPage() {
                          <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-black uppercase tracking-widest border border-primary/20">
                             {course.courseCode}
                          </span>
-                         <span className="px-3 py-1 bg-white/5 text-muted-foreground rounded-full text-[10px] font-black uppercase tracking-widest border border-white/5">
+                         <span className="px-3 py-1 bg-foreground/5 text-muted-foreground rounded-full text-[10px] font-black uppercase tracking-widest border border-primary/10">
                             {course.credits} Credits
                          </span>
                       </div>
@@ -137,7 +137,7 @@ export default function MarksPage() {
                    </div>
                 </div>
                 
-                <div className="p-6 lg:p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/5 min-w-full lg:min-w-[240px] text-center flex flex-col items-center justify-center relative overflow-hidden group/score">
+                <div className="p-6 lg:p-8 rounded-[2.5rem] bg-foreground/[0.03] border border-primary/10 min-w-full lg:min-w-[240px] text-center flex flex-col items-center justify-center relative overflow-hidden group/score">
                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover/score:opacity-100 transition-opacity" />
                    <p className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-3 relative z-10">Total Obtained</p>
                    <div className="flex items-baseline gap-2 relative z-10">
@@ -149,7 +149,7 @@ export default function MarksPage() {
 
              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 relative z-10">
                 {course.scores.map((score: any, si: number) => (
-                   <div key={si} className="p-4 lg:p-6 rounded-2xl bg-white/[0.03] border border-white/5 group/test hover:border-primary/20 transition-all text-center">
+                   <div key={si} className="p-4 lg:p-6 rounded-2xl bg-foreground/[0.03] border border-primary/10 group/test hover:border-primary/20 transition-all text-center">
                       <p className="text-[8px] lg:text-[9px] font-black text-muted-foreground uppercase tracking-widest mb-1 lg:mb-2 group-hover/test:text-primary transition-colors">
                          {score.label.split('/')[0]}
                       </p>
@@ -171,7 +171,7 @@ export default function MarksPage() {
       <div className="p-4 lg:p-12 space-y-8 lg:space-y-16 max-w-7xl mx-auto">
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="text-3xl lg:text-7xl font-black tracking-tighter text-white uppercase italic leading-none mb-3">
+            <h1 className="text-3xl lg:text-7xl font-black tracking-tighter text-foreground uppercase italic leading-none mb-3">
                Assessment <span className="text-primary italic">Sync</span>
             </h1>
             <p className="text-muted-foreground font-medium text-sm lg:text-lg italic uppercase tracking-widest">Detailed performance tracking and evaluation</p>
@@ -186,7 +186,7 @@ export default function MarksPage() {
       {practical.length > 0 && <Section title="Practical & Lab" marks={practical} icon={Beaker} isTheory={false} />}
 
       {(!data?.marks || data.marks.length === 0) && (
-        <div className="p-20 flex flex-col items-center justify-center glass-card rounded-[2.5rem] border-dashed border-white/10 opacity-30">
+        <div className="p-20 flex flex-col items-center justify-center glass-card rounded-[2.5rem] border-dashed border-border/10 opacity-30">
            <p className="text-muted-foreground font-bold text-xl uppercase tracking-widest">No evaluation data found</p>
         </div>
       )}

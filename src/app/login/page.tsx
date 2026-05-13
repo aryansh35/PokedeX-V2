@@ -97,7 +97,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Dynamic Tactical Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow" />
@@ -110,13 +110,13 @@ export default function LoginPage() {
           <div className="w-full max-w-md bg-[#121214]/80 border border-rose-500/20 rounded-[2.5rem] p-10 shadow-2xl shadow-rose-500/10 space-y-8 animate-in zoom-in-95 duration-500">
             <div className="text-center space-y-4">
               <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-rose-500 shadow-2xl shadow-rose-500/30 transform hover:scale-110 transition-transform">
-                <AlertCircle className="w-12 h-12 text-white animate-pulse" />
+                <AlertCircle className="w-12 h-12 text-foreground animate-pulse" />
               </div>
               <div className="space-y-2">
-                <h2 className="text-3xl font-black tracking-tighter italic uppercase text-white">
+                <h2 className="text-3xl font-black tracking-tighter italic uppercase text-foreground">
                   Maximum <span className="text-rose-500 underline decoration-rose-500/30 underline-offset-8">Session</span>
                 </h2>
-                <p className="text-white/50 font-medium text-xs leading-relaxed max-w-[280px] mx-auto">
+                <p className="text-foreground/50 font-medium text-xs leading-relaxed max-w-[280px] mx-auto">
                   You have reached maximum active sessions. Please terminate the active sessions manually to proceed.
                 </p>
               </div>
@@ -127,17 +127,17 @@ export default function LoginPage() {
                 href="https://academia.srmist.edu.in/49910842/portal/academia-academic-services/myProfile"
                 target="_blank"
                 rel="noopener"
-                className="w-full bg-rose-500 hover:bg-rose-600 text-white py-5 rounded-2xl font-black uppercase italic tracking-[0.2em] transition-all transform hover:translate-y-[-2px] active:translate-y-[1px] shadow-xl shadow-rose-500/30 text-center block text-sm"
+                className="w-full bg-rose-500 hover:bg-rose-600 text-foreground py-5 rounded-2xl font-black uppercase italic tracking-[0.2em] transition-all transform hover:translate-y-[-2px] active:translate-y-[1px] shadow-xl shadow-rose-500/30 text-center block text-sm"
               >
                 Terminate Sessions
               </a>
               <button
                 onClick={() => setShowSessionGuard(false)}
-                className="w-full py-2 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 hover:text-white transition-all flex items-center justify-center gap-2 group"
+                className="w-full py-2 text-[10px] font-black uppercase tracking-[0.4em] text-foreground/30 hover:text-foreground transition-all flex items-center justify-center gap-2 group"
               >
-                <span className="w-8 h-[1px] bg-white/10 group-hover:w-12 transition-all" />
+                <span className="w-8 h-[1px] bg-foreground/10 group-hover:w-12 transition-all" />
                 Done!
-                <span className="w-8 h-[1px] bg-white/10 group-hover:w-12 transition-all" />
+                <span className="w-8 h-[1px] bg-foreground/10 group-hover:w-12 transition-all" />
               </button>
             </div>
           </div>
@@ -148,25 +148,25 @@ export default function LoginPage() {
         <div className="text-center space-y-6">
           <div className="relative inline-block group">
             <div className={`absolute inset-0 bg-primary/20 blur-2xl rounded-full scale-150 transition-opacity duration-700 ${isAuthorized ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`} />
-            <div className={`relative inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.3)] transform transition-all duration-500 border border-white/20 ${isAuthorized ? 'animate-authorize' : '-rotate-6 group-hover:rotate-0'}`}>
-              <Pokeball className="w-10 h-10 text-white drop-shadow-lg" />
+            <div className={`relative inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary shadow-[0_0_50px_rgba(var(--primary-rgb),0.3)] transform transition-all duration-500 border border-border/20 ${isAuthorized ? 'animate-authorize' : '-rotate-6 group-hover:rotate-0'}`}>
+              <Pokeball className="w-10 h-10 text-foreground drop-shadow-lg" />
             </div>
           </div>
           <div className="space-y-2">
-            <h1 className="text-4xl lg:text-6xl font-black tracking-tighter italic uppercase text-white leading-none">
+            <h1 className="text-4xl lg:text-6xl font-black tracking-tighter italic uppercase text-foreground leading-none">
               Pokéde<span className="text-primary drop-shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)]">X</span>
             </h1>
             <div className="flex items-center justify-center gap-3">
-              <span className="h-[1px] w-8 bg-white/10" />
-              <p className="text-white/40 font-black uppercase tracking-[0.4em] text-[10px]">
+              <span className="h-[1px] w-8 bg-foreground/10" />
+              <p className="text-foreground/40 font-black uppercase tracking-[0.4em] text-[10px]">
                 {isAuthorized ? "Establishing Secure Link..." : "Mission Uplink Terminal"}
               </p>
-              <span className="h-[1px] w-8 bg-white/10" />
+              <span className="h-[1px] w-8 bg-foreground/10" />
             </div>
           </div>
         </div>
 
-        <div className={`glass-card bg-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-10 shadow-[0_0_80px_rgba(0,0,0,0.5)] relative overflow-hidden group transition-all duration-500 ${isAuthorized ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
+        <div className={`glass-card bg-foreground/[0.02] backdrop-blur-2xl border border-border/10 rounded-[2.5rem] p-10 shadow-[0_0_80px_rgba(0,0,0,0.5)] relative overflow-hidden group transition-all duration-500 ${isAuthorized ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'}`}>
           {/* Subtle Scanning Light */}
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent -translate-y-full group-hover:animate-scan" />
 
@@ -181,7 +181,7 @@ export default function LoginPage() {
                     type="text"
                     name="email"
                     required
-                    className="w-full bg-black/20 border border-white/5 rounded-2xl px-6 py-5 text-white placeholder-white/10 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all font-bold tracking-wide"
+                    className="w-full bg-black/20 border border-border/5 rounded-2xl px-6 py-5 text-foreground placeholder-white/10 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all font-bold tracking-wide"
                     placeholder="NETID / REG_NO"
                     autoFocus
                   />
@@ -200,14 +200,14 @@ export default function LoginPage() {
                     type={eyeOpen ? "text" : "password"}
                     name="password"
                     required
-                    className="w-full bg-black/20 border border-white/5 rounded-2xl px-6 py-5 text-white placeholder-white/10 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all font-bold tracking-widest"
+                    className="w-full bg-black/20 border border-border/5 rounded-2xl px-6 py-5 text-foreground placeholder-white/10 focus:outline-none focus:border-primary/50 focus:bg-primary/5 transition-all font-bold tracking-widest"
                     placeholder="••••••••"
                     autoFocus
                   />
                   <button
                     type="button"
                     onClick={() => setEyeOpen(p => !p)}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 hover:text-primary transition-all p-2"
+                    className="absolute right-6 top-1/2 -translate-y-1/2 text-foreground/20 hover:text-primary transition-all p-2"
                   >
                     {eyeOpen ? <Eye size={20} /> : <EyeOff size={20} />}
                   </button>
@@ -230,7 +230,7 @@ export default function LoginPage() {
                   type="button"
                   onClick={() => { setError(""); setEmail({ mail: "", digest: "", identifier: "" }); }}
                   disabled={loading}
-                  className="px-6 py-5 bg-white/5 hover:bg-white/10 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all text-white/40 hover:text-white border border-white/5"
+                  className="px-6 py-5 bg-foreground/5 hover:bg-foreground/10 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all text-foreground/40 hover:text-foreground border border-border/5"
                 >
                   Return
                 </button>
@@ -238,11 +238,11 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-primary hover:bg-primary/90 text-white py-5 rounded-2xl font-black uppercase italic tracking-[0.2em] transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 border border-white/10"
+                className="flex-1 bg-primary hover:bg-primary/90 text-foreground py-5 rounded-2xl font-black uppercase italic tracking-[0.2em] transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 shadow-2xl shadow-primary/30 flex items-center justify-center gap-3 border border-border/10"
               >
                 {loading ? (
                   <div className="flex items-center gap-3">
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-border/30 border-t-white rounded-full animate-spin" />
                     <span className="text-xs">Processing...</span>
                   </div>
                 ) : (
@@ -257,8 +257,8 @@ export default function LoginPage() {
         </div>
 
         <div className="flex flex-col items-center gap-4">
-          <div className="h-[1px] w-12 bg-white/10" />
-          <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/10">
+          <div className="h-[1px] w-12 bg-foreground/10" />
+          <p className="text-[10px] font-black uppercase tracking-[0.5em] text-foreground/10">
             Secured Protocol
           </p>
         </div>

@@ -33,7 +33,7 @@ const BATCH_2 = [
 import { useDashboard } from "@/context/DashboardContext";
 
 export default function TimetablePage() {
-   const { data, loading, dayOrder: todayDayOrder, lastSynced, refreshData } = useDashboard();
+   const { data, loading, theme, dayOrder: todayDayOrder, lastSynced, refreshData } = useDashboard();
    const [activeBatch, setActiveBatch] = useState(1);
    const [activeDay, setActiveDay] = useState(1);
    const [currentTime, setCurrentTime] = useState<Date | null>(null);
@@ -63,9 +63,10 @@ export default function TimetablePage() {
    const handleDownload = async () => {
       if (tableRef.current) {
          try {
+            const isLight = theme?.startsWith('zenith');
             const dataUrl = await toPng(tableRef.current, {
                cacheBust: true,
-               backgroundColor: '#0a0a0b',
+               backgroundColor: isLight ? '#ffffff' : '#0a0a0b',
                pixelRatio: 3,
                width: 2200, // Increased width to prevent clipping
                style: {
@@ -108,10 +109,10 @@ export default function TimetablePage() {
    }, [data]);
 
    if (loading) return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b]">
+      <div className="min-h-screen flex items-center justify-center bg-background">
          <div className="flex flex-col items-center gap-6">
             <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 animate-bounce">
-               <svg viewBox="0 0 100 100" className="w-8 h-8 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <svg viewBox="0 0 100 100" className="w-8 h-8 text-foreground" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="50" cy="50" r="44" fill="white" />
                   <path d="M50 6A44 44 0 0 1 94 50H62A12 12 0 0 0 38 50H6A44 44 0 0 1 50 6Z" fill="currentColor" />
                   <circle cx="50" cy="50" r="12" fill="white" stroke="#000" strokeWidth="6" />
@@ -168,13 +169,13 @@ export default function TimetablePage() {
          <div className="p-4 lg:p-8 space-y-12 lg:space-y-16 max-w-7xl mx-auto">
             <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 print:hidden">
                <div className="flex-1">
-                  <h1 className="text-3xl lg:text-5xl font-black tracking-tighter text-white uppercase italic leading-none mb-3">
+                  <h1 className="text-3xl lg:text-5xl font-black tracking-tighter text-foreground uppercase italic leading-none mb-3">
                      Timetable <span className="text-primary italic">Matrix</span>
                   </h1>
                   <div className="flex flex-wrap items-center gap-4 text-muted-foreground font-bold">
                      <p className="italic text-xs lg:text-sm">Batch {activeBatch}</p>
-                     <span className="w-1.5 h-1.5 bg-white/20 rounded-full hidden sm:block" />
-                     <div className="flex items-center gap-2 text-white/80">
+                     <span className="w-1.5 h-1.5 bg-foreground/20 rounded-full hidden sm:block" />
+                     <div className="flex items-center gap-2 text-foreground/80">
                         <Clock size={16} className="text-primary animate-pulse" />
                         <span className="tabular-nums uppercase text-[10px] lg:text-xs tracking-widest">
                            {currentTime ? currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) : "--:-- --"}
@@ -184,7 +185,7 @@ export default function TimetablePage() {
                </div>
                <button
                   onClick={handleDownload}
-                  className="flex items-center gap-3 px-6 lg:px-8 py-3 lg:py-4 bg-primary text-white rounded-2xl lg:rounded-3xl font-black uppercase italic shadow-2xl shadow-primary/30 hover:scale-105 transition-all group text-xs lg:text-base w-fit"
+                  className="flex items-center gap-3 px-6 lg:px-8 py-3 lg:py-4 bg-primary text-foreground rounded-2xl lg:rounded-3xl font-black uppercase italic shadow-2xl shadow-primary/30 hover:scale-105 transition-all group text-xs lg:text-base w-fit"
                >
                   <Download size={20} className="group-hover:-translate-y-1 transition-transform" />
                   Download TimeTable
@@ -204,14 +205,14 @@ export default function TimetablePage() {
                   </span>
                </div>
 
-               <div className="flex bg-white/5 p-1.5 rounded-[2.5rem] border border-white/5 w-full max-w-[95vw] overflow-x-auto no-scrollbar mx-auto">
+               <div className="flex bg-foreground/5 p-1.5 rounded-[2.5rem] border border-primary/10 w-full max-w-[95vw] overflow-x-auto no-scrollbar mx-auto">
                   {[1, 2, 3, 4, 5].map((day) => (
                      <button
                         key={day}
                         onClick={() => setActiveDay(day)}
                         className={`px-4 lg:px-8 py-3 rounded-2xl lg:rounded-3xl text-[10px] lg:text-sm font-black uppercase tracking-widest transition-all whitespace-nowrap flex-1 ${activeDay === day
-                           ? "bg-primary text-white shadow-xl shadow-primary/20"
-                           : "text-muted-foreground hover:text-white hover:bg-white/5"
+                           ? "bg-primary text-foreground shadow-xl shadow-primary/20"
+                           : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
                            }`}
                      >
                         Day {day}
@@ -229,11 +230,11 @@ export default function TimetablePage() {
                      const isLive = isSlotLive(time);
 
                      return (
-                        <div key={i} className={`glass-card rounded-[2.5rem] p-8 border-2 transition-all group relative flex flex-col md:flex-row md:items-center justify-between gap-8 ${isLive ? 'border-emerald-500/50 bg-emerald-500/[0.02] shadow-[0_0_40px_rgba(16,185,129,0.1)]' : 'border-white/5 hover:border-primary/20 hover:bg-primary/[0.02]'} ${!course ? 'opacity-20 grayscale' : ''}`}>
+                        <div key={i} className={`glass-card rounded-[2.5rem] p-8 border-2 transition-all group relative flex flex-col md:flex-row md:items-center justify-between gap-8 ${isLive ? 'border-emerald-500/50 bg-primary/[0.02] shadow-[0_0_40px_rgba(16,185,129,0.1)]' : 'border-primary/10 hover:border-primary/20 hover:bg-primary/[0.02]'} ${!course ? 'opacity-20 grayscale' : ''}`}>
                            {isLive && (
-                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-emerald-500 rounded-full flex items-center gap-2 shadow-lg shadow-emerald-500/20 animate-pulse-subtle">
+                              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary rounded-full flex items-center gap-2 shadow-lg shadow-emerald-500/20 animate-pulse-subtle">
                                  <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
-                                 <span className="text-[10px] font-black uppercase tracking-widest text-white">Live Mission</span>
+                                 <span className="text-[10px] font-black uppercase tracking-widest text-foreground">Live Mission</span>
                               </div>
                            )}
                            <div className="flex items-center gap-6">
@@ -242,7 +243,7 @@ export default function TimetablePage() {
                               </div>
                               <div>
                                  <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">Hour {i + 1}</p>
-                                 <p className="text-2xl font-black text-white italic leading-none">{time}</p>
+                                 <p className="text-2xl font-black text-foreground italic leading-none">{time}</p>
                               </div>
                            </div>
 
@@ -250,23 +251,23 @@ export default function TimetablePage() {
                               <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                  <div>
                                     <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2">{course.code} • {slot}</p>
-                                    <h3 className="text-xl font-black text-white uppercase italic leading-tight">{course.title}</h3>
+                                    <h3 className="text-xl font-black text-foreground uppercase italic leading-tight">{course.title}</h3>
                                  </div>
                                  <div className="flex items-center md:justify-end gap-12">
                                     <div className="flex items-center gap-3">
-                                       <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-500">
+                                       <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
                                           <MapPin size={18} />
                                        </div>
                                        <div>
                                           <p className="text-xs font-black text-muted-foreground uppercase tracking-widest">Room</p>
-                                          <p className="text-xl font-black text-white uppercase">{course.room}</p>
+                                          <p className="text-xl font-black text-foreground uppercase">{course.room}</p>
                                        </div>
                                     </div>
                                  </div>
                               </div>
                            ) : (
-                              <div className="flex-1 flex items-center justify-center border-2 border-dashed border-white/5 rounded-2xl lg:rounded-3xl py-6">
-                                 <p className="text-xs font-black text-white/10 uppercase tracking-[0.3em]">{slot} — Free Slot</p>
+                              <div className="flex-1 flex items-center justify-center border-2 border-dashed border-primary/10 rounded-2xl lg:rounded-3xl py-6">
+                                 <p className="text-xs font-black text-foreground/10 uppercase tracking-[0.3em]">{slot} — Free Slot</p>
                               </div>
                            )}
                         </div>
@@ -277,36 +278,36 @@ export default function TimetablePage() {
 
             {/* Hidden Full Timetable Matrix (Export Capture Only) */}
             <div className="fixed left-[-9999px] top-0">
-               <div ref={tableRef} className="bg-[#0a0a0b] p-16 w-[2200px] space-y-12">
+               <div ref={tableRef} className="bg-background p-16 w-[2200px] space-y-12">
                   <header className="flex items-end justify-between">
                      <div>
-                        <h1 className="text-6xl font-black tracking-tighter text-white uppercase italic">Academic <span className="text-primary">Matrix</span></h1>
+                        <h1 className="text-6xl font-black tracking-tighter text-foreground uppercase italic">Academic <span className="text-primary">Matrix</span></h1>
                         <p className="text-muted-foreground font-medium text-xl italic uppercase tracking-widest">Full 2026 Rotation • Batch {activeBatch}</p>
                      </div>
                   </header>
 
-                  <div className="glass-card rounded-[3rem] border-white/5 overflow-hidden">
+                  <div className="glass-card rounded-[3rem] border-primary/10 overflow-hidden">
                      <table className="w-full border-collapse">
                         <thead>
-                           <tr className="bg-white/[0.02]">
-                              <th className="p-8 text-left border-r border-b border-white/5 min-w-[150px]">
+                           <tr className="bg-foreground/[0.02]">
+                              <th className="p-8 text-left border-r border-b border-primary/10 min-w-[150px]">
                                  <div className="flex items-center gap-3 text-muted-foreground">
                                     <Clock size={16} />
                                     <span className="text-[10px] font-black uppercase tracking-widest text-primary">Day / Hour</span>
                                  </div>
                               </th>
                               {TIME_SLOTS.map((time, i) => (
-                                 <th key={i} className="p-8 border-b border-white/5 min-w-[160px] text-center">
+                                 <th key={i} className="p-8 border-b border-primary/10 min-w-[160px] text-center">
                                     <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-1">{i + 1}</p>
-                                    <p className="text-xs font-bold text-white/40">{time}</p>
+                                    <p className="text-xs font-bold text-foreground/40">{time}</p>
                                  </th>
                               ))}
                            </tr>
                         </thead>
                         <tbody>
                            {matrix.map((dayOrder, dayIdx) => (
-                              <tr key={dayIdx} className="group border-b border-white/5">
-                                 <td className="p-8 border-r border-white/5 bg-white/[0.01]">
+                              <tr key={dayIdx} className="group border-b border-primary/10">
+                                 <td className="p-8 border-r border-primary/10 bg-foreground/[0.01]">
                                     <div className="flex items-center gap-4">
                                        <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                                           <CalendarIcon size={20} />
@@ -325,7 +326,7 @@ export default function TimetablePage() {
                                                 </div>
                                                 <div>
                                                    <p className="text-[8px] font-black text-primary uppercase tracking-[0.2em] mb-1">{course.code}</p>
-                                                   <h4 className="text-xs font-black leading-tight text-white uppercase italic line-clamp-2">{course.title}</h4>
+                                                   <h4 className="text-xs font-black leading-tight text-foreground uppercase italic line-clamp-2">{course.title}</h4>
                                                 </div>
                                                 <div className="mt-3 flex items-center justify-between">
                                                    <span className="text-[9px] font-bold text-primary/60 uppercase">{course.room}</span>

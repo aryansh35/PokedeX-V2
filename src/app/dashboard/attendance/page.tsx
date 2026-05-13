@@ -23,10 +23,10 @@ export default function AttendancePage() {
   };
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b]">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-6">
         <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 animate-bounce">
-          <svg viewBox="0 0 100 100" className="w-8 h-8 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 100 100" className="w-8 h-8 text-foreground" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="44" fill="white" />
             <path d="M50 6A44 44 0 0 1 94 50H62A12 12 0 0 0 38 50H6A44 44 0 0 1 50 6Z" fill="currentColor" />
             <circle cx="50" cy="50" r="12" fill="white" stroke="#000" strokeWidth="6" />
@@ -56,7 +56,7 @@ export default function AttendancePage() {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {courses.map((course: any, i: number) => (
-          <div key={i} className="glass-card rounded-[2.5rem] p-6 lg:p-10 border-white/5 hover:bg-white/[0.02] transition-all relative overflow-hidden group">
+          <div key={i} className="glass-card rounded-[2.5rem] p-6 lg:p-10 border-primary/10 hover:bg-foreground/[0.02] transition-all relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-10 text-primary/5 group-hover:text-primary/10 transition-all">
                <Zap size={120} strokeWidth={3} />
             </div>
@@ -66,25 +66,25 @@ export default function AttendancePage() {
                 <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">{course.courseCode}</p>
                 <h3 className="text-2xl font-black leading-tight group-hover:text-primary transition-colors italic tracking-tighter uppercase">{course.courseTitle}</h3>
               </div>
-              <div className={`p-3 lg:p-4 rounded-2xl ${course.status === 'safe' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-red-500/10 text-red-500'} border border-current/20`}>
+              <div className={`p-3 lg:p-4 rounded-2xl ${course.status === 'safe' ? 'bg-primary/10 text-primary' : 'bg-red-500/10 text-red-500'} border border-current/20`}>
                 {course.status === 'safe' ? <CheckCircle2 className="w-5 h-5 lg:w-6 lg:h-6" /> : <AlertCircle className="w-5 h-5 lg:w-6 lg:h-6" />}
               </div>
             </div>
 
             <div className="grid grid-cols-3 gap-3 lg:gap-6 relative z-10">
-              <div className="p-3 lg:p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-3 lg:p-4 rounded-2xl bg-foreground/5 border border-primary/10">
                 <p className="text-[8px] lg:text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Percentage</p>
                 <p className="text-lg lg:text-2xl font-black tabular-nums">{course.attendance}%</p>
               </div>
-              <div className="p-3 lg:p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-3 lg:p-4 rounded-2xl bg-foreground/5 border border-primary/10">
                 <p className="text-[8px] lg:text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Conducted</p>
                 <p className="text-lg lg:text-2xl font-black tabular-nums">{course.conducted}</p>
               </div>
-              <div className="p-3 lg:p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-3 lg:p-4 rounded-2xl bg-foreground/5 border border-primary/10">
                 <p className="text-[8px] lg:text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">
                   {course.status === 'safe' ? 'Margin' : 'Needed'}
                 </p>
-                <p className={`text-lg lg:text-2xl font-black tabular-nums ${course.status === 'safe' ? 'text-emerald-500' : 'text-red-500'}`}>
+                <p className={`text-lg lg:text-2xl font-black tabular-nums ${course.status === 'safe' ? 'text-primary' : 'text-red-500'}`}>
                   {course.margin}
                 </p>
               </div>
@@ -100,7 +100,7 @@ export default function AttendancePage() {
       <div className="p-4 lg:p-12 space-y-8 lg:space-y-16 max-w-7xl mx-auto">
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
-            <h1 className="text-3xl lg:text-7xl font-black tracking-tighter text-white uppercase italic leading-none mb-3">
+            <h1 className="text-3xl lg:text-7xl font-black tracking-tighter text-foreground uppercase italic leading-none mb-3">
                Attendance <span className="text-primary italic">Hub</span>
             </h1>
             <p className="text-muted-foreground font-medium text-sm lg:text-lg italic uppercase tracking-widest">Real-time tracking and margin analysis</p>
@@ -115,7 +115,7 @@ export default function AttendancePage() {
       {practical.length > 0 && <Section title="Practical & Lab" courses={practical} icon={Beaker} />}
 
       {(!data?.attendance || data.attendance.length === 0) && (
-        <div className="p-20 flex flex-col items-center justify-center glass-card rounded-[2.5rem] border-dashed border-white/10 opacity-30">
+        <div className="p-20 flex flex-col items-center justify-center glass-card rounded-[2.5rem] border-dashed border-border/10 opacity-30">
            <p className="text-muted-foreground font-bold text-xl uppercase tracking-widest">No attendance data found</p>
         </div>
       )}

@@ -10,19 +10,20 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "#7c3aed",
-          foreground: "#ffffff",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--foreground))",
         },
-        background: "#09090b",
-        foreground: "#fafafa",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         card: {
-          DEFAULT: "#121214",
-          foreground: "#fafafa",
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
         muted: {
-          DEFAULT: "#27272a",
-          foreground: "#a1a1aa",
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
+        border: "hsl(var(--border))",
       },
       animation: {
         'spin-slow': 'spin 12s linear infinite',
