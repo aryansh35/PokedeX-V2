@@ -21,7 +21,19 @@ export default function MarksPage() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-[#0a0a0b]">
-      <RefreshCw className="w-8 h-8 text-primary animate-spin" />
+      <div className="flex flex-col items-center gap-6">
+        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/20 animate-bounce">
+          <svg viewBox="0 0 100 100" className="w-8 h-8 text-white" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="44" fill="white" />
+            <path d="M50 6A44 44 0 0 1 94 50H62A12 12 0 0 0 38 50H6A44 44 0 0 1 50 6Z" fill="currentColor" />
+            <circle cx="50" cy="50" r="12" fill="white" stroke="#000" strokeWidth="6" />
+            <path d="M2 50H38" stroke="#000" strokeWidth="6" strokeLinecap="round" />
+            <path d="M62 50H98" stroke="#000" strokeWidth="6" strokeLinecap="round" />
+            <circle cx="50" cy="50" r="47" stroke="#000" strokeWidth="6" />
+          </svg>
+        </div>
+        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-primary/60 animate-pulse">Syncing Data...</p>
+      </div>
     </div>
   );
 

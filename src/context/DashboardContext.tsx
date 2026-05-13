@@ -31,17 +31,25 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
    }, []);
 
    const load = useCallback(async (force: boolean = false, isRetry: boolean = false) => {
-      setLoading(true);
-      try {
-         const cached = localStorage.getItem("pokedex_cache");
-         let currentCache = cached ? JSON.parse(cached) : null;
+      // If we already have data and this isn't a force refresh, don't block the UI
+      const cached = localStorage.getItem("pokedex_cache");
+      let currentCache = cached ? JSON.parse(cached) : null;
+      
+      if (currentCache && !force && !isRetry) {
+         setData(currentCache.data);
+         setDayOrder(currentCache.dayOrder || 0);
+         setLastSynced(currentCache.dynamicTimestamp);
+         setLoading(false); // UI is now interactive with cached data
+      } else if (!isRetry) {
+         setLoading(true);
+      }
 
+      try {
          const now = Date.now();
          const SIX_HOURS = 6 * 60 * 60 * 1000;
          const TWENTY_FOUR_HOURS = 24 * 60 * 60 * 1000;
 
          const targets: string[] = [];
-         
          const lastDOFetch = currentCache?.dayOrderTimestamp || 0;
          const isNewDay = new Date().toDateString() !== new Date(lastDOFetch).toDateString();
          
@@ -59,23 +67,32 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             if (staticAge > TWENTY_FOUR_HOURS && !targets.includes("courses")) targets.push("courses", "profile");
          }
 
-         if (targets.length === 0 && currentCache) {
-            setData(currentCache.data);
-            setDayOrder(currentCache.dayOrder || 0);
-            setLastSynced(currentCache.dynamicTimestamp);
+         // If no sync needed, we already set the data from cache above
+         if (targets.length === 0) {
             setLoading(false);
             return;
          }
 
+         // Set a timeout for the network request
+         const controller = new AbortController();
+         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+
          const res = await getDashboardData(targets);
+         clearTimeout(timeoutId);
+
          if (res.success) {
             const newData = res.data;
+            
+            // VALIDATION: Ensure we don't overwrite good cache with empty data (SRM glitch)
+            const hasNewAttendance = newData.attendance && newData.attendance.length > 0;
+            const hasNewMarks = newData.marks && newData.marks.length > 0;
+            
             const merged = currentCache ? { ...currentCache.data } : {};
             
-            if (targets.includes("attendance")) merged.attendance = newData.attendance;
-            if (targets.includes("marks")) merged.marks = newData.marks;
-            if (targets.includes("courses")) merged.courses = newData.courses;
-            if (targets.includes("profile")) merged.profile = newData.profile;
+            if (targets.includes("attendance") && hasNewAttendance) merged.attendance = newData.attendance;
+            if (targets.includes("marks") && hasNewMarks) merged.marks = newData.marks;
+            if (targets.includes("courses") && newData.courses?.length > 0) merged.courses = newData.courses;
+            if (targets.includes("profile") && newData.profile?.name) merged.profile = newData.profile;
             
             const liveDO = targets.includes("dayOrder") ? newData.dayOrder : (currentCache?.dayOrder || 0);
             
@@ -83,7 +100,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
                data: merged,
                dayOrder: liveDO,
                dayOrderTimestamp: targets.includes("dayOrder") ? now : (currentCache?.dayOrderTimestamp || now),
-               dynamicTimestamp: (targets.includes("attendance") || targets.includes("marks")) ? now : (currentCache?.dynamicTimestamp || now),
+               dynamicTimestamp: (hasNewAttendance || hasNewMarks) ? now : (currentCache?.dynamicTimestamp || now),
                staticTimestamp: (targets.includes("courses") || targets.includes("profile")) ? now : (currentCache?.staticTimestamp || now),
             };
 
@@ -95,6 +112,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
             forceLogout();
             return;
          } else if (currentCache) {
+            // Fallback to cache silently if sync fails
             setData(currentCache.data);
             setDayOrder(currentCache.dayOrder || 0);
             setLastSynced(currentCache.dynamicTimestamp);
@@ -105,9 +123,9 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
          }
       } catch (error) {
          console.error("Dashboard Intelligence Error:", error);
-         if (!isRetry) setTimeout(() => load(force, true), 1000);
+         if (!isRetry && !currentCache) setTimeout(() => load(force, true), 1000);
       } finally {
-         if (!isRetry) setLoading(false);
+         setLoading(false);
       }
    }, [forceLogout]);
 
