@@ -265,16 +265,29 @@ export default function GPAPage() {
                         </div>
 
                         {/* Intelligence Depth Card */}
-                        <div className="glass-card rounded-[2.5rem] p-8 lg:p-10 border-primary/10 flex flex-col justify-between group shadow-2xl">
-                           <div className="space-y-6">
-                              <div className="flex items-center justify-between">
-                                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-foreground/20">Total Credits this Sem</p>
-                                 <GraduationCap className="text-primary/40 group-hover:text-primary transition-colors" size={20} />
+                        <div className="glass-card rounded-[2.5rem] lg:rounded-[4rem] p-10 lg:p-12 border-primary/10 flex flex-col items-center justify-center group shadow-2xl relative overflow-hidden text-center">
+                           {/* Circular Decorative Background */}
+                           <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+                              <div className="w-[120%] aspect-square border-[40px] border-primary rounded-full animate-spin-slow group-hover:opacity-20 transition-opacity" />
+                           </div>
+
+                           <div className="relative z-10 space-y-8 lg:space-y-12">
+                              <div className="space-y-2">
+                                 <GraduationCap className="mx-auto text-primary animate-bounce-subtle" size={40} />
+                                 <p className="text-[10px] font-black uppercase tracking-[0.5em] text-primary">Total Capacity</p>
                               </div>
-                              <div className="space-y-4">
-                                 <div className="flex justify-between items-end">
-                                    <h3 className="text-4xl font-black italic">{calculator.totalCredits}</h3>
-                                    <p className="text-[10px] font-bold text-foreground/40 uppercase mb-1">Credits Analyzed</p>
+
+                              <div className="space-y-1">
+                                 <h3 className="text-6xl lg:text-8xl font-black italic tracking-tighter text-foreground leading-none drop-shadow-2xl">
+                                    {calculator.totalCredits}
+                                 </h3>
+                                 <p className="text-[10px] font-black text-foreground/20 uppercase tracking-widest">Academic Credits Analyzed</p>
+                              </div>
+
+                              <div className="pt-8 border-t border-primary/10 w-full">
+                                 <div className="flex items-center justify-center gap-3">
+                                    <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 italic">System Calibrated</span>
                                  </div>
                               </div>
                            </div>

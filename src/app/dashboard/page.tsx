@@ -418,9 +418,9 @@ export default function MasterDashboard() {
                </div>
             </header>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-               {/* Left Column: Intelligence & Missions */}
-               <div className="lg:col-span-3 space-y-12">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+               {/* Intelligence & Missions - Full Width */}
+               <div className="lg:col-span-4 space-y-12">
                   {/* Today's Missions */}
                   <section className="space-y-6 lg:space-y-8">
                      <div className="flex items-center justify-between gap-2">
@@ -437,35 +437,58 @@ export default function MasterDashboard() {
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {todayMissions.map((mission: any, i: number) => (
-                           <div key={i} className={`glass-card rounded-[2.5rem] p-5 lg:p-6 border-2 transition-all group relative ${mission.isLive ? 'border-primary/50 bg-primary/[0.02] shadow-[0_0_40px_rgba(var(--primary),0.1)]' : 'border-primary/10 hover:border-primary/20 hover:bg-primary/[0.02]'}`}>
+                           <div key={i} className={`glass-card rounded-[2.5rem] p-6 lg:p-8 border-2 transition-all group relative overflow-hidden ${mission.isLive ? 'border-primary/50 bg-primary/[0.02] shadow-[0_0_40px_rgba(var(--primary),0.1)]' : 'border-primary/10 hover:border-primary/20 hover:bg-primary/[0.02]'}`}>
+                              {/* Background Decorative Element */}
+                              <div className="absolute top-0 right-0 p-8 text-primary/5 group-hover:text-primary/10 transition-all pointer-events-none translate-x-4 -translate-y-4">
+                                 <Zap size={100} strokeWidth={2.5} />
+                              </div>
+
                               {mission.isLive && (
-                                 <div className="absolute -top-3 left-6 px-3 py-1 bg-primary rounded-full flex items-center gap-2 shadow-lg shadow-primary/20 animate-pulse-subtle">
-                                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
-                                    <span className="text-[9px] font-black uppercase tracking-widest text-foreground">Live</span>
+                                 <div className="absolute -top-3 left-8 px-4 py-1.5 bg-primary rounded-full flex items-center gap-2 shadow-lg shadow-primary/20 animate-pulse-subtle z-10">
+                                    <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+                                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground">Mission Live</span>
                                  </div>
                               )}
-                              <div className="flex items-start justify-between mb-4 lg:mb-6">
-                                 <div className="flex items-center gap-4">
-                                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                                       <Clock size={18} />
+
+                              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                                 {/* Left Side: Intel */}
+                                 <div className="space-y-4 flex-1">
+                                    <div className="flex items-center gap-4">
+                                       <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                                          <Clock size={22} />
+                                       </div>
+                                       <div>
+                                          <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Hour {mission.hour}</p>
+                                          <p className="text-sm font-black text-foreground/40 italic uppercase tracking-widest">{mission.time}</p>
+                                       </div>
                                     </div>
-                                    <div>
-                                       <p className="text-[9px] lg:text-[10px] font-black text-primary uppercase tracking-widest">Hour {mission.hour}</p>
-                                       <p className="text-xs lg:text-sm font-bold text-foreground/60">{mission.time}</p>
+
+                                    <div className="space-y-1">
+                                       <h4 className="text-2xl lg:text-3xl font-black text-foreground uppercase italic leading-none tracking-tighter line-clamp-2 min-h-[3rem] lg:min-h-[4rem] flex items-center">
+                                          {mission.title}
+                                       </h4>
+                                       <div className="flex items-center gap-2 text-[10px] font-black text-primary/40 uppercase tracking-widest">
+                                          <Bookmark size={12} />
+                                          Code: {mission.code}
+                                       </div>
                                     </div>
                                  </div>
-                                 <div className="px-3 py-1 bg-foreground/5 rounded-xl text-[9px] lg:text-[10px] font-black text-muted-foreground uppercase">
-                                    Slot {mission.activeSlot}
-                                 </div>
-                              </div>
-                              <h4 className="text-lg lg:text-xl font-black text-foreground uppercase italic mb-2 line-clamp-1">{mission.title}</h4>
-                              <div className="flex items-center gap-3 mt-4 border-t border-primary/10 pt-4">
-                                 <div className="w-8 h-8 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
-                                    <MapPin size={14} />
-                                 </div>
-                                 <div>
-                                    <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Room</p>
-                                    <p className="text-base lg:text-lg font-black text-foreground uppercase">{mission.room}</p>
+
+                                 {/* Right Side: Deployment */}
+                                 <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-4 md:pl-8 md:border-l md:border-primary/10">
+                                    <div className="text-left md:text-right">
+                                       <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.3em] mb-1">Deployment Room</p>
+                                       <div className="flex items-center md:justify-end gap-3">
+                                          <MapPin size={20} className="text-primary hidden md:block" />
+                                          <p className="text-3xl lg:text-4xl font-black text-foreground uppercase italic tracking-tighter leading-none">
+                                             {mission.room || "TBA"}
+                                          </p>
+                                       </div>
+                                    </div>
+                                    
+                                    <div className="px-4 py-2 bg-foreground/5 rounded-2xl border border-primary/5 text-[11px] font-black text-primary uppercase tracking-[0.2em] shadow-inner">
+                                       Slot {mission.activeSlot}
+                                    </div>
                                  </div>
                               </div>
                            </div>
@@ -480,8 +503,8 @@ export default function MasterDashboard() {
                   </section>
                </div>
 
-               {/* Right Column: Tactical Overlays */}
-               <div className="lg:col-span-4 space-y-8">
+               {/* Tactical Overlays - Full Width Below */}
+               <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
 
                   {/* Attendance Pulse (Focused on Today's Missions) */}
                   <div className="glass-card rounded-[2.5rem] p-6 lg:p-8 border-primary/10 space-y-6 lg:space-y-8">
